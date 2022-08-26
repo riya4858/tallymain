@@ -1,4 +1,5 @@
 import datetime
+from calendar import month
 from urllib import response
 from datetime import datetime, timedelta
 from django.contrib import messages
@@ -7,9 +8,12 @@ from .models import *
 from errno import ETIME
 from datetime import date
 from re import S
+from re import A, S
+from this import s
 from unittest import signals
 from webbrowser import get
 from django.db.models.functions import Coalesce
+from xml.etree.ElementTree import tostring
 from django.db.models import Sum
 from cgi import print_arguments
 from multiprocessing import context
@@ -19,7 +23,11 @@ from urllib import request
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.http import JsonResponse
-
+from django.db.models.functions import TruncDay
+from django.db.models.functions import TruncMonth
+from django.db.models.functions import TruncDate
+from django.db.models.functions import Extract
+from django.db.models import Count
 # Create your views here.
 
 def base(request):
@@ -3951,3 +3959,143 @@ def stock_item_allocations(request):
         crt.save()
         return redirect("stock_items")
     return render(request,'allocation_stock_item.html',{'gd':gd})
+
+
+#......................Ann........................
+
+def salesregister(request):#ann
+    credit=Sales.objects.all().annotate(month=TruncMonth('sales_date')).values('month').annotate(total=Sum('total')).order_by('month').values("month", "total")                 # Select the count of the grouping       
+    sales=Sales.objects.all()
+    print("hai")
+    vol=[];
+    s= credit[0]
+    for s in  credit:
+        # truncate_date = datetime(s["month"])
+      print(s['total'])
+    vol.append(s["total"])
+    for x in vol:
+      print(x)            
+    total1 = sum(sales.values_list('total', flat=True)) 
+    return render(request,'salesregister.html',{'sales':sales,'total1':total1,'credit':credit})   
+
+def purchaseregister(request):#ann
+    p=Purchase.objects.all()
+    credit=Purchase.objects.all().annotate(month=TruncMonth('purchase_date')).values('month').annotate(total=Sum('total')).order_by('month').values("month", "total")                 # Select the count of the grouping       
+    total1 = sum(p.values_list('total', flat=True))  
+    return render(request,'purchaseregister.html',{'total1':total1,'credit':credit})  
+
+def listofsalesvouchers(request):#ann
+    com=Companies.objects.all()
+    grp=Group.objects.all()
+    return render(request,'listofsalesvouchers.html')  
+ 
+def journalregister(request):#ann
+    p=Particular.objects.all()
+    s=Journal.objects.all()
+    items=Journal.objects.all().annotate(month=TruncMonth('journal_date')).values('month').annotate(journal_count = Count('id')).values('month','journal_count').order_by('month')
+    print(items)
+    return render(request,'journal_report.html',{'items':items})
+
+def listofsalesvoucher(request,pk):#ann
+   # s=Sales.objects.all()
+    m=pk
+    s= Sales.objects.filter(sales_date__year='2022', 
+                     sales_date__month=m)
+ 
+    total1 = sum(s.values_list('total', flat=True))               
+       
+    if m==1:
+            msg1="1-Jan-22  to 31-jan-22"
+    elif m==2:
+            msg1="1-Feb-22  to 28-feb-22"
+    elif m ==3:
+            msg1="1-March-22  to 31-March-22"
+    elif m ==4:
+        
+             msg1="1-April-22 to 30-April-22"
+    elif m ==5:
+             msg1="1-May-22  to 31-May-22"
+    elif m ==6:
+            msg1="1-June-22 to 31-May-22"
+    elif m ==7:
+            msg1="1-july-22  to 31-july-22"
+    elif m ==8:
+             msg1="1-Aug-22  to 31-Aug-22"  
+    elif m==9:
+            msg1="1-Sep-22  to 30-Sep-22"
+    elif m ==10:
+             msg1="1-Oct-22 to 30-Oct-22"
+    elif m ==11:
+            msg1="1-Nov-22 to 31-Nov-22" 
+    elif m ==12:
+             msg1="1-Dec-22 to 31-Dec-22"     
+    else:
+        msg1="July 01 to 31" 
+    return render(request,'listofsalesvouchers.html',{'sales':s,'msg1':msg1,'total1':total1})  
+
+
+def listofpurchasevoucher(request,pk):#ann
+    m=pk
+    p= Purchase.objects.filter(purchase_date__year='2022', 
+                     purchase_date__month=m)   
+    total1 = sum(p.values_list('total', flat=True))                             
+    if m==1:
+            msg1="1-Jan-22  to 31-jan-22"
+    elif m==2:
+            msg1="1-Feb-22  to 28-feb-22"
+    elif m ==3:
+            msg1="1-March-22  to 31-March-22"
+    elif m ==4:
+             msg1="1-April-22 to 30-April-22"
+    elif m ==5:
+             msg1="1-May-22  to 31-May-22"
+    elif m ==6:
+            msg1="1-June-22 to 31-May-22"
+    elif m ==7:
+            msg1="1-july-22  to 31-july-22"
+    elif m ==8:
+             msg1="1-Aug-22  to 31-Aug-22"  
+    elif m==9:
+            msg1="1-Sep-22  to 30-Sep-22"
+    elif m ==10:
+             msg1="1-Oct-22 to 30-Oct-22"
+    elif m ==11:
+            msg1="1-Nov-22 to 31-Nov-22" 
+    elif m ==12:
+             msg1="1-Dec-22 to 31-Dec-22"      
+    else:
+        msg1="July 01 to 31"               
+    return render(request,'listofpurchasevouchers.html',{'purchase':p,'msg1':msg1,'total1':total1})
+
+def listjournalvouchers(request,pk):#ann 
+    m=pk
+    j= Journal.objects.filter(journal_date__year='2022', 
+                     journal_date__month=m)   
+                          
+    if m==1:
+            msg1="1-Jan-22  to 31-jan-22"
+    elif m==2:
+            msg1="1-Feb-22  to 28-feb-22"
+    elif m ==3:
+            msg1="1-March-22  to 31-March-22"
+    elif m ==4:
+             msg1="1-April-22 to 30-April-22"
+    elif m ==5:
+             msg1="1-May-22  to 31-May-22"
+    elif m ==6:
+            msg1="1-June-22 to 31-May-22"
+    elif m ==7:
+            msg1="1-july-22  to 31-july-22"
+    elif m ==8:
+             msg1="1-Aug-22  to 31-Aug-22"  
+    elif m==9:
+            msg1="1-Sep-22  to 30-Sep-22"
+    elif m ==10:
+             msg1="1-Oct-22 to 30-Oct-22"
+    elif m ==11:
+            msg1="1-Nov-22 to 31-Nov-22" 
+    elif m ==12:
+             msg1="1-Dec-22 to 31-Dec-22"      
+    else:
+        msg1="July 01 to 31"                        
+    return render(request,'listjournalvouchers.html',{'journal':j,'msg1':msg1})

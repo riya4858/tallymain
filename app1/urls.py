@@ -316,5 +316,14 @@ urlpatterns = [
     
     path('stock_item_allocations',views.stock_item_allocations,name='stock_item_allocations'),
 
+#......................Ann........................
+
+    path('listofpurchasevoucher/<int:pk>',views.listofpurchasevoucher,name='listofpurchasevoucher'),#ann,#listofpurchasevouchers
+    path('listjournalvouchers/<int:pk>',views.listjournalvouchers,name='listjournalvouchers'),#ann,#listofjournalvouchers
+    path('salesregister',views.salesregister,name='salesregister'),#ann
+    path('purchaseregister',views.purchaseregister,name='purchaseregister'),#ann
+    path('journalregister',views.journalregister,name='journalregister'),#ann
+    path('listofsalesvoucher/<int:pk>',views.listofsalesvoucher,name='listofsalesvoucher'),#ann
+
 
 ]

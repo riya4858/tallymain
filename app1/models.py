@@ -559,3 +559,43 @@ class allocate_stock(models.Model):
     per=models.CharField(max_length=100,null=True)
     amount=models.CharField(max_length=100,null=True)
 
+
+# Ann
+
+class Sales(models.Model):#ann sales table
+    partyAccntname = models.CharField(max_length=225)
+    currentbalancep = models.CharField(max_length=225,null=True)#current balance of party
+    salesledger = models.CharField(max_length=225)
+    currentbalancesl = models.IntegerField(null=True)#balance of corresponding sales ledger
+    nameofitem=models.CharField(max_length=225,null=True)
+    quantity=models.IntegerField(null=True)
+    price=models.IntegerField(default=0)
+    sales_date=models.DateField(null=True)
+    total=models.IntegerField(default=0)
+   # voucher=models.ForeignKey(Voucher,on_delete=models.CASCADE,blank=True,null=True)
+
+class Purchase(models.Model):#ann purchase tabel
+    supplierinvoiceno= models.CharField(max_length=225,default=True)
+    partyAccntname = models.CharField(max_length=225,default=True)
+    currentbalancep = models.CharField(max_length=225,null=True)
+    currentbalancepl = models.CharField(max_length=225,null=True)
+    purchaseledger = models.CharField(max_length=225,default=True)
+    nameofitem=models.CharField(max_length=225,null=True)
+    quantity=models.IntegerField(null=True)
+    price=models.IntegerField(default=0)
+    total=models.IntegerField(default=0)
+    purchase_date=models.DateField(null=True) 
+    #voucher=models.ForeignKey(Voucher,on_delete=models.CASCADE,blank=True,null=True)
+
+class Journal(models.Model):#ann journal table
+     journalledger = models.CharField(max_length=225,null=True)
+     journal_date=models.DateField(null=True)  
+
+class Particular(models.Model):#ann Particular table
+    particularsby = models.CharField(max_length=225,null=True)
+    particularsto = models.CharField(max_length=225,null=True)
+    credit = models.IntegerField(default=0,null=True)#current balance of party
+    debit = models.IntegerField(null=True,default=0)#balance of corresponding sales ledger
+    journal=models.ForeignKey(Journal,on_delete=models.CASCADE,blank=True,null=True)  
+
+
