@@ -3963,20 +3963,16 @@ def stock_item_allocations(request):
 
 #......................Ann........................
 
+def disp_more_reports(request):#ann
+    com=Companies.objects.all()
+    return render(request,'dispmorereprt.html')
+
 def salesregister(request):#ann
     credit=Sales.objects.all().annotate(month=TruncMonth('sales_date')).values('month').annotate(total=Sum('total')).order_by('month').values("month", "total")                 # Select the count of the grouping       
     sales=Sales.objects.all()
-    print("hai")
-    vol=[];
-    s= credit[0]
-    for s in  credit:
-        # truncate_date = datetime(s["month"])
-      print(s['total'])
-    vol.append(s["total"])
-    for x in vol:
-      print(x)            
+          
     total1 = sum(sales.values_list('total', flat=True)) 
-    return render(request,'salesregister.html',{'sales':sales,'total1':total1,'credit':credit})   
+    return render(request,'salesregister.html',{'sales':sales,'total1':total1,'credit':credit})
 
 def purchaseregister(request):#ann
     p=Purchase.objects.all()

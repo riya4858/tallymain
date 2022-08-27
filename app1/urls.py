@@ -318,6 +318,7 @@ urlpatterns = [
 
 #......................Ann........................
 
+    path('disp_more_reports',views.disp_more_reports,name='disp_more_reports'),#ann
     path('listofpurchasevoucher/<int:pk>',views.listofpurchasevoucher,name='listofpurchasevoucher'),#ann,#listofpurchasevouchers
     path('listjournalvouchers/<int:pk>',views.listjournalvouchers,name='listjournalvouchers'),#ann,#listofjournalvouchers
     path('salesregister',views.salesregister,name='salesregister'),#ann
