@@ -28,6 +28,7 @@ from django.db.models.functions import TruncMonth
 from django.db.models.functions import TruncDate
 from django.db.models.functions import Extract
 from django.db.models import Count
+from unittest import TextTestRunner
 # Create your views here.
 
 def base(request):
@@ -4095,3 +4096,391 @@ def listjournalvouchers(request,pk):#ann
     else:
         msg1="July 01 to 31"                        
     return render(request,'listjournalvouchers.html',{'journal':j,'msg1':msg1})
+
+
+#......................Niyas........................
+
+def liststockviews(request):
+    data=stock_item_crt.objects.all()
+    context={'data':data}
+    return render(request, 'liststock.html',context)
+
+def liststockgroupviews(request):
+    data=CreateStockGrp.objects.all()
+    context={'data':data}
+    return render(request, 'liststockgroup.html',context)
+
+def singlestockgroupanalysisview(request,pk):
+    data1=CreateStockGrp.objects.get(id=pk)
+    data2=stock_item_crt.objects.get(under=data1)
+    data=analysis_view.objects.filter(particular=data2)
+    sum1 = 0
+    sum2 = 0
+    sum3 = 0
+    sum4 = 0
+    sum5 = 0
+    sum6 = 0
+    for a in data:
+        sum1 += a.iquantity
+    for b in data:
+        sum2 += b.ieff_rate
+    for c in data:
+        sum3 += c.ivalue
+    for d in data:
+        sum4 += d.oquantity
+    for e in data:
+        sum5 += e.oeff_rate
+    for f in data:
+        sum6 += f.ovalue
+    context={'data':data,'data1':data1,'sum1':sum1,'sum2':sum2,'sum3':sum3,'sum4':sum4,'sum5':sum5,'sum6':sum6}
+    return render(request, 'singlestockgroupanalysis.html',context)
+
+
+def itemmovementanalysisview(request):
+    data1=purchase_model.objects.all()
+    data2=sale_model.objects.all()
+    context={'data1':data1,'data2':data2}
+    return render(request, 'itemmovementanalysis.html',context)
+
+
+def querystockview(request,pk):
+    data=stock_item_crt.objects.get(id=pk)
+    # ndata=CreateGodown.objects.all()
+    ndata=CreateGodown.objects.filter(itm=data)
+    total_sum = 0
+    for item in ndata:
+        total_sum += item.itm.quantity
+    # sums=CreateGodown.objects.filter(ndata).sum()
+    # purchase=purchase_model.objects.all()
+    purchase=purchase_model.objects.filter(itm=data)
+    # sale=sale_model.objects.all()
+    sale=sale_model.objects.filter(itm=data)
+    # cat=CreateStockCateg.objects.all()
+    cat=CreateStockCateg.objects.filter(itm=data)
+    
+    context={'data':data,'ndata':ndata,'purchase':purchase,'sale':sale,'cat':cat,'total_sum':total_sum}
+    return render(request, 'querystocks.html',context)
+
+
+def purchasevoucheranalysisview(request,pk):
+    data=purchase_model.objects.get(id=pk)
+    context={'data':data}
+    return render(request, 'purchasevoucheranalysis.html',context)
+
+def salevoucheranalysisview(request,pk):
+    data=sale_model.objects.get(id=pk)
+    context={'data':data}
+    return render(request, 'salevoucheranalysis.html',context)
+
+
+def stockgroupanalysisview(request):
+    data=analysis_view.objects.all()
+    # var1=analysis_view.objects.get(ivalue)
+    # list1=list(var1)
+    # sums=sum(list1)
+    # for ivalue in data:
+    #     list1=sum(ivalue)
+    #     print(list1)
+    # sums=analysis_view.objects.aggregate(Sum('ivalue'))
+    # ModelName.objects.filter(field_name__isnull=True).aggregate(Sum('field_name'))
+    sum1 = 0
+    sum2 = 0
+    for a in data:
+        sum1 += a.ivalue
+    for b in data:
+        sum2 += b.ovalue
+    context={'data':data,'sum1':sum1,'sum2':sum2}
+    return render(request, 'stockgroupanalysis.html',context)
+
+def stockitmecreateview(request):
+    data=CreateStockGrp.objects.all()
+    context={'data':data}
+    return render(request, 'stockitemcreation.html',context) 
+
+def savestockgroup1(request):
+    if request.method == 'POST':
+        gpname=request.POST['name']
+        gpalias=request.POST['alias']
+        gpunder=request.POST.get('und')
+        gpquantity=request.POST.get('qty')
+        data=CreateStockGrp(name=gpname,alias=gpalias,under=gpunder,quantities=gpquantity)
+        data.save()
+        return redirect('liststockgroupviews')
+
+def savestockitem(request):
+    if request.method == 'POST':
+        iname=request.POST['name']
+        ialias=request.POST['alias']
+        iunder=request.POST['under']
+        und=CreateStockGrp.objects.get(id=iunder)
+        iunitr=request.POST.get('unit')
+        igst=request.POST.get('gst')
+        isupply=request.POST.get('supply')
+        iduty=request.POST.get('rduty')
+        iquantity=request.POST.get('qnt')
+        irate=request.POST.get('rate')
+        iper=request.POST.get('per')
+        ivalue=request.POST.get('value')
+        data=stock_item_crt(name=iname,alias=ialias,under=und,gst=igst,supply=isupply,rduty=iduty,quantity=iquantity,rate=irate,per=iper,value=ivalue)
+        data.save()
+        
+        return redirect('liststockviews')
+
+
+#......................Jerin........................
+
+def receivabl(request):
+    rec=receivable.objects.all()
+    return render (request,'receivable.html',{'rec':rec}) 
+
+def payabl(request):
+    pay=payable.objects.all()
+    return render(request,'payable.html',{'pay':pay})  
+
+def creategroup1(request):
+    grp=GroupModel.objects.all()
+    return render (request,'creategroup.html1',{'grp':grp})     
+
+
+def create_group1(request):
+    if request.method == 'POST':
+        group_name = request.POST['group_name']
+
+       
+        group_alias = request.POST['group_alias']
+        
+        group_under = request.POST['group_under']
+        nature=request.POST['nature']
+
+        gross_profit=request.POST['gross_profit']
+
+
+        sub_ledger = request.POST['sub_ledger']
+        debit_credit = request.POST['debit_credit']
+        calculation = request.POST['calculation']
+        invoice = request.POST['invoice']
+
+        mdl = GroupModel(
+            group_name=group_name,
+            group_alias=group_alias,
+            group_under=group_under,
+            nature=nature,
+            gross_profit=gross_profit,
+            sub_ledger=sub_ledger,
+            debit_credit=debit_credit,
+            calculation=calculation,
+            invoice=invoice,
+        )
+        mdl.save()
+        return redirect('createledger')
+        
+
+def grcreate(request):
+    gr=GroupModel.objects.all()
+    return render(request,'grcreate.html',{'gr':gr})    
+
+def createledger(request):
+    grp=GroupModel.objects.all()
+    return render (request,'createledger.html',{'grp':grp})     
+
+def credit(request):
+    cre=cred.objects.all()
+    return render(request,'credit.html',{'cre':cre})
+
+def debi(request):
+    debi=debit.objects.all()
+    return render(request,'debit.html',{'debi':debi})   
+
+def ledgerlist(request):
+    ledg=ledgercreation.objects.all()
+    return render(request,'ledgerlist.html',{'ledg':ledg})    
+
+def ledgercreations(request):
+    if request.method == 'POST':
+        
+        name=request.POST['name']
+
+        alias=request.POST['alias']
+        under=request.POST['under']
+        bank_details=request.POST['bank_details']
+        
+        ac_holder_nm=request.POST['ac_holder_nm']
+
+        acc_no=request.POST['acc_no']
+        if acc_no=="":
+            acc_no=None
+
+        ifsc_code=request.POST['ifsc_code']
+        if ifsc_code=="":
+            ifsc_code=None
+
+        swift_code=request.POST['swift_code']
+        if swift_code=="":
+            swift_code=None
+
+        bank_name=request.POST['bank_name']
+        branch=request.POST['branch']
+        SA_cheque_bk=request.POST['SA_cheque_bk']
+        Echeque_p=request.POST['Echeque_p']
+
+        occ_set_odl=request.POST['occ_set_odl']
+        occ_ac_holder_nm=request.POST['occ_ac_holder_nm']
+        occ_acc_no=request.POST['occ_acc_no']
+        if occ_acc_no=="":
+            occ_acc_no=None
+
+        occ_ifsc_code=request.POST['occ_ifsc_code']
+        if occ_ifsc_code=="":
+            occ_ifsc_code=None
+
+        occ_swift_code=request.POST['occ_swift_code']    
+        if occ_swift_code=="":
+            occ_swift_code=None
+
+        occ_bank_name=request.POST['occ_bank_name']   
+        occ_branch=request.POST['occ_branch']
+        occ_SA_cheque_bk=request.POST['occ_SA_cheque_bk']
+        occ_Echeque_p=request.POST['occ_Echeque_p']
+
+        od_set_odl=request.POST['od_set_odl']
+        od_ac_holder_nm=request.POST['od_ac_holder_nm']
+        od_acc_no=request.POST['od_acc_no']
+        if od_acc_no=="":
+            od_acc_no=None
+
+        od_ifsc_code=request.POST['od_ifsc_code']  
+        if od_ifsc_code=="":
+            od_ifsc_code=None
+
+        od_swift_code=request.POST['od_swift_code']
+        if od_swift_code=="":
+            od_swift_code=None
+
+        od_bank_name=request.POST['od_bank_name']
+        if od_bank_name=="":
+            od_bank_name=None
+
+        od_branch=request.POST['od_branch']
+        od_SA_cheque_bk=request.POST['od_SA_cheque_bk']
+        od_Echeque_p=request.POST['od_Echeque_p']
+
+
+
+
+
+
+        mname=request.POST['mname']
+        address=request.POST['address']
+        country=request.POST['country']
+        state=request.POST['state']
+
+        pincode=request.POST['pincode']
+        if pincode=="":
+            pincode=None
+
+        pan_no=request.POST['pan_no']
+        if pan_no=="":
+            pan_no=None
+
+        registration_type=request.POST['registration_type']    
+
+        gst_uin=request.POST['gst_uin']
+        if gst_uin=="":
+            gst_uin=None
+
+        set_alter_gstdetails=request.POST['set_alter_gstdetails']
+
+        statutory_details=request.POST['statutory_details']
+
+        type_of_ledger=request.POST['type_of_ledger']
+        rounding_method=request.POST['rounding_method']
+        rounding_limit=request.POST['rounding_limit']
+        if rounding_limit=="":
+            rounding_limit=None
+        GST_Applicable=request.POST['GST_Applicable']
+        Alter_GST_Details=request.POST['Alter_GST_Details']
+        Appropriate=request.POST['Appropriate']
+        Types_of_supply=request.POST['Types_of_supply']
+
+        type_duty_tax=request.POST['type_duty_tax']
+        tax_type=request.POST['tax_type']
+        percentage_of_calcution=request.POST['percentage_of_calcution']
+        rond_method=request.POST['rond_method']
+        rond_limit=request.POST['rond_limit']
+        if rond_limit=="":
+            rond_limit=None
+        balance_billbybill=request.POST['balance_billbybill']
+        credit_period=request.POST['credit_period']
+        creditdays_voucher=request.POST['creditdays_voucher']
+      
+
+
+
+
+        led=ledgercreation(
+            name=name,
+            alias=alias,
+            under=under,
+            bank_details=bank_details,
+            ac_holder_nm=ac_holder_nm,
+            acc_no=acc_no,
+            ifsc_code=ifsc_code,
+            swift_code=swift_code,
+            bank_name=bank_name,
+            branch=branch,
+            SA_cheque_bk=SA_cheque_bk,
+            Echeque_p=Echeque_p,
+            mname=mname,
+            address=address,
+            country=country,
+            state=state,
+            pincode=pincode,
+            pan_no=pan_no,
+            registration_type=registration_type,
+            gst_uin=gst_uin,
+            set_alter_gstdetails=set_alter_gstdetails,
+            type_of_ledger=type_of_ledger,
+            rounding_method=rounding_method,
+            rounding_limit=rounding_limit,
+            GST_Applicable=GST_Applicable,
+            Alter_GST_Details=Alter_GST_Details,
+            Appropriate=Appropriate,
+            Types_of_supply=Types_of_supply,
+            type_duty_tax=type_duty_tax,
+            tax_type=tax_type,
+            percentage_of_calcution=percentage_of_calcution,
+            rond_method=rond_method,
+            rond_limit=rond_limit,
+            balance_billbybill=balance_billbybill,
+            credit_period=credit_period,
+            creditdays_voucher=creditdays_voucher,
+            statutory_details=statutory_details,
+            occ_set_odl=occ_set_odl,
+            occ_acc_no=occ_acc_no,
+            occ_bank_name=occ_bank_name,
+            occ_ac_holder_nm=occ_ac_holder_nm,
+            occ_branch=occ_branch,
+            occ_Echeque_p=occ_Echeque_p,
+            occ_ifsc_code=occ_ifsc_code,
+            occ_SA_cheque_bk=occ_SA_cheque_bk,
+            occ_swift_code=occ_swift_code,
+            od_ac_holder_nm=od_ac_holder_nm,
+            od_acc_no=od_acc_no,
+            od_bank_name=od_bank_name,
+            od_branch=od_branch,
+            od_Echeque_p=od_Echeque_p,
+            od_SA_cheque_bk=od_SA_cheque_bk,
+            od_ifsc_code=od_ifsc_code,
+            od_set_odl=od_set_odl,
+            od_swift_code=od_swift_code
+
+            
+
+
+        )
+        led.save()
+        return redirect('ledgerlist')
+
+def nw(request):
+    ledi=led.objects.all()
+    return render(request,'nw.html',{'ledg':ledi})

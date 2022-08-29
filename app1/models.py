@@ -417,16 +417,6 @@ class CreateStockGrp(models.Model):
     under_name=models.CharField(max_length=50)
     quantities=models.CharField(max_length=50)
 
-class CreateStockCateg(models.Model):
-    name=models.CharField(max_length=100)
-    alias=models.CharField(max_length=100)
-    under_name=models.CharField(max_length=50)
-
-class CreateGodown(models.Model):
-    name=models.CharField(max_length=100)
-    alias=models.CharField(max_length=100)
-    under_name=models.CharField(max_length=50)
-
 class CreateEmployeeGrp(models.Model):
     name=models.CharField(max_length=100)
     alias=models.CharField(max_length=100)
@@ -546,6 +536,9 @@ class stock_item_crt(models.Model):
     per=models.CharField(max_length=100,null=True)
     value=models.CharField(max_length=100,null=True)
     additional=models.CharField(max_length=100,null=True)
+    gst=models.CharField(max_length=100,default="")
+    supply=models.CharField(max_length=100,default="")
+    rduty=models.CharField(max_length=100,default="")
     
 class Price_level_crt(models.Model):
     number=models.CharField(max_length=100,null=True)
@@ -599,3 +592,213 @@ class Particular(models.Model):#ann Particular table
     journal=models.ForeignKey(Journal,on_delete=models.CASCADE,blank=True,null=True)  
 
 
+# Niyas
+
+class analysis_view(models.Model):
+    particular=models.ForeignKey(stock_item_crt,on_delete=models.CASCADE)
+    iquantity=models.IntegerField(null=True)
+    ieff_rate=models.IntegerField(null=True)
+    ivalue=models.IntegerField(null=True)
+    oquantity=models.IntegerField(null=True)
+    oeff_rate=models.IntegerField(null=True)
+    ovalue=models.IntegerField(null=True)
+
+class group_ananysis_view(models.Model):
+    particular=models.ForeignKey(CreateStockGrp,on_delete=models.CASCADE)
+    iquantity=models.IntegerField(null=True)
+    ieff_rate=models.IntegerField(null=True)
+    ivalue=models.IntegerField(null=True)
+    oquantity=models.IntegerField(null=True)
+    oeff_rate=models.IntegerField(null=True)
+    ovalue=models.IntegerField(null=True)
+
+class CreateGodown(models.Model):
+    name=models.CharField(max_length=100)
+    alias=models.CharField(max_length=100)
+    under_name=models.CharField(max_length=50)
+    itm=models.ForeignKey(stock_item_crt,on_delete=models.CASCADE,default='')
+
+class purchase_model(models.Model):
+    itm=models.ForeignKey(stock_item_crt,on_delete=models.CASCADE)
+    name=models.CharField(max_length=255)
+    date=models.DateField(auto_now_add=True)
+    qnt=models.IntegerField()
+    brate=models.IntegerField()
+    bvalue=models.IntegerField()
+    addcost=models.IntegerField()
+    totalvalue=models.IntegerField()
+
+class sale_model(models.Model):
+    itm=models.ForeignKey(stock_item_crt,on_delete=models.CASCADE)
+    name=models.CharField(max_length=255)
+    date=models.DateField(auto_now_add=True)
+    qnt=models.IntegerField()
+    brate=models.IntegerField()
+    bvalue=models.IntegerField()
+    addcost=models.IntegerField()
+    totalvalue=models.IntegerField()
+
+
+class CreateStockCateg(models.Model):
+    itm=models.ForeignKey(stock_item_crt,on_delete=models.CASCADE,default='')
+    name=models.CharField(max_length=100)
+    alias=models.CharField(max_length=100)
+    under_name=models.CharField(max_length=50)
+    qnt=models.IntegerField()
+    cost=models.IntegerField()
+    saleprice=models.IntegerField()
+
+
+# Jerin
+
+class items(models.Model):
+    items=models.CharField(max_length=255)
+    quantity=models.IntegerField(null=True)
+
+    def __str__(self):
+      return self.items
+
+class receivable(models.Model):
+    date=models.DateField()
+    party_name=models.CharField(max_length=255)
+    items=models.ForeignKey(items,on_delete=models.CASCADE,null=True)
+    pending_amound=models.IntegerField()
+    due_date=models.DateField()
+    overdue=models.IntegerField(null=True)
+
+    def __str__(self):
+      return self.party_name
+
+
+class payitems(models.Model):
+    items=models.CharField(max_length=255)
+    quantity=models.IntegerField(null=True)
+
+    def __str__(self):
+      return self.items
+
+class payable(models.Model):
+    date=models.DateField()
+    party_name=models.CharField(max_length=255)
+    items=models.ForeignKey(payitems,on_delete=models.CASCADE,null=True)
+    pending_amound=models.IntegerField()
+    due_date=models.DateField()
+    overdue=models.IntegerField(null=True)
+
+    def total(self):
+      tot=sum(self.pending_amound)
+      return tot
+
+    def __str__(self):
+      return self.party_name  
+
+class grunder(models.Model):
+    und=models.CharField(max_length=255)  
+
+    def __str__(self):
+      return self.und  
+
+
+
+class GroupModel(models.Model):
+    group_name  = models.CharField(max_length=225)
+    group_alias  = models.CharField(max_length=225,null=True)
+    group_under  = models.CharField(max_length=225)
+    nature = models.CharField(max_length=255,null=True)
+    gross_profit = models.CharField(max_length=255 ,null=True)
+    sub_ledger  = models.BooleanField(default=False)
+    debit_credit  = models.BooleanField(default=False)
+    calculation  = models.BooleanField(default=False)
+    invoice  = models.CharField(max_length=225,null=True,blank=True)
+
+    def _str_(self):
+        return self.name      
+
+class ledgercreation(models.Model):
+    name=models.CharField(max_length=255,null=True)
+    alias=models.CharField(max_length=255,null=True)
+    under=models.CharField(max_length=255)
+    bank_details=models.CharField(max_length=255,) 
+    mname=models.CharField(max_length=255,null=True)
+    address=models.CharField(max_length=255,null=True)
+    country=models.CharField(max_length=255,null=True)
+    state=models.CharField(max_length=255,null=True)
+    pincode =models.IntegerField(null=True)
+    pan_no =models.IntegerField(null=True)
+    registration_type =models.CharField(max_length=255,null=True)
+    gst_uin =models.IntegerField(null=True)
+    set_alter_gstdetails =models.CharField(max_length=255,null=True)
+    ac_holder_nm =models.CharField(max_length=255,null=True)
+    acc_no =models.IntegerField(null=True) 
+    ifsc_code =models.IntegerField(null=True)
+    swift_code =models.IntegerField(null=True)
+    bank_name =models.CharField(max_length=255,null=True) 
+    branch =models.CharField(max_length=255,null=True)
+    SA_cheque_bk =models.CharField(max_length=255,null=True)
+    Echeque_p =models.CharField(max_length=255,null=True)
+
+    occ_set_odl = models.CharField(max_length=255,null=True)
+    occ_ac_holder_nm =models.CharField(max_length=255,null=True)
+    occ_acc_no =models.IntegerField(null=True) 
+    occ_ifsc_code =models.IntegerField(null=True)
+    occ_swift_code =models.IntegerField(null=True)
+    occ_bank_name =models.CharField(max_length=255,null=True) 
+    occ_branch =models.CharField(max_length=255,null=True)
+    occ_SA_cheque_bk =models.CharField(max_length=255,null=True)
+    occ_Echeque_p =models.CharField(max_length=255,null=True)
+
+    od_set_odl = models.CharField(max_length=255,null=True)
+    od_ac_holder_nm =models.CharField(max_length=255,null=True)
+    od_acc_no =models.IntegerField(null=True) 
+    od_ifsc_code =models.IntegerField(null=True)
+    od_swift_code =models.IntegerField(null=True)
+    od_bank_name =models.CharField(max_length=255,null=True) 
+    od_branch =models.CharField(max_length=255,null=True)
+    od_SA_cheque_bk =models.CharField(max_length=255,null=True)
+    od_Echeque_p =models.CharField(max_length=255,null=True)
+
+    
+
+    statutory_details=models.CharField(max_length=255,null=True)
+
+    type_of_ledger = models.CharField(max_length=100,null=True)
+    rounding_method = models.CharField(max_length=100,null=True)
+    rounding_limit = models.IntegerField(blank=True, null=True, default=None)
+    GST_Applicable = models.CharField(max_length=100,null=True)
+    Alter_GST_Details= models.CharField(max_length=100,null=True)
+    Appropriate=models.CharField(max_length=100,null=True)
+    Types_of_supply=models.CharField(max_length=100,null=True)
+
+    type_duty_tax = models.CharField(max_length=100,null=True)
+    tax_type = models.CharField(max_length=100,null=True)
+    percentage_of_calcution = models.CharField(max_length=100,null=True)
+    rond_method = models.CharField(max_length=100,null=True)
+    rond_limit = models.IntegerField(blank=True, null=True, default=None)
+
+    balance_billbybill = models.CharField(max_length=100,null=True)
+    credit_period = models.CharField(max_length=100,null=True)
+    creditdays_voucher = models.CharField(max_length=100,null=True)
+
+
+class debit(models.Model):
+    name=models.CharField(max_length=255) 
+    credit=models.IntegerField()
+    debit=models.IntegerField()
+
+    def _str_(self):
+            return self.name 
+
+class cred(models.Model):
+    name=models.CharField(max_length=255) 
+    credit=models.IntegerField()
+    debit=models.IntegerField()
+
+    def _str_(self):
+            return self.name 
+
+class led(models.Model):
+    date=models.DateField()
+    openam=models.IntegerField()
+    penam=models.IntegerField()
+    due=models.DateField()
+    overd=models.IntegerField() 

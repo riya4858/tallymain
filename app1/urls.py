@@ -326,5 +326,45 @@ urlpatterns = [
     path('journalregister',views.journalregister,name='journalregister'),#ann
     path('listofsalesvoucher/<int:pk>',views.listofsalesvoucher,name='listofsalesvoucher'),#ann
 
+#......................Niyas........................
+
+    path('liststockviews',views.liststockviews,name='liststockviews'),
+    path('liststockgroupviews',views.liststockgroupviews,name='liststockgroupviews'),
+    # path('singlestockgroupanalysisview',views.singlestockgroupanalysisview,name='singlestockgroupanalysisview'),
+    
+    # path('querystockview',views.querystockview,name='querystockview'),
+
+    # path('salevoucheranalysisview',views.salevoucheranalysisview,name='salevoucheranalysisview'),
+    # path('purchasevoucheranalysisview',views.purchasevoucheranalysisview,name='purchasevoucheranalysisview'),
+    path('itemmovementanalysisview',views.itemmovementanalysisview,name='itemmovementanalysisview'),
+    path('stockgroupanalysisview',views.stockgroupanalysisview,name='stockgroupanalysisview'),
+    # path('stockgroupcreateview',views.stockgroupcreateview,name='stockgroupcreateview'),
+    path('stockitmecreateview',views.stockitmecreateview,name='stockitmecreateview'),
+
+#......................Jerin........................
+
+    path('savestockgroup1',views.savestockgroup1,name='savestockgroup1'),
+    path('savestockitem',views.savestockitem,name='savestockitem'),
+
+    path('querystockview/<int:pk>',views.querystockview,name='querystockview'),
+    path('singlestockgroupanalysisview/<int:pk>',views.singlestockgroupanalysisview,name='singlestockgroupanalysisview'),
+    path('purchasevoucheranalysisview/<int:pk>',views.purchasevoucheranalysisview,name='purchasevoucheranalysisview'),
+    path('salevoucheranalysisview/<int:pk>',views.salevoucheranalysisview,name='salevoucheranalysisview'),
+    # path('itemmovementanalysisview/<int:pk>',views.itemmovementanalysisview,name='itemmovementanalysisview'),
+
+
+    path('receivabl',views.receivabl,name='receivabl'),
+    path('payabl',views.payabl,name='payabl'),
+    path('creategroup',views.creategroup,name='creategroup'),
+    path('create_group',views.create_group,name='create_group'),
+    path('grcreate',views.grcreate,name='grcreate'),
+    path('createledger',views.createledger,name='createledger'),
+    path('credit',views.credit,name='credit'),
+    path('debi',views.debi,name='debi'),
+    path('ledgercreations',views.ledgercreations,name='ledgercreations'),
+    path('ledgerlist',views.ledgerlist,name='ledgerlist'),
+    path('nw',views.nw,name='nw')
+
+
 
 ]
