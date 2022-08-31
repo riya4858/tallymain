@@ -32,7 +32,7 @@
         <div hidden  style="text-align: center;margin-top:-35px;font-weight:900">{{cmp.id}}</div>
        
     
-        <form class="p-5" style="background-color:rgba(0,0,0,.4);" method="post" action="{% url 'create_voucher' cmp.id %}" autocomplete="off">
+        <form class="p-5" style="background-color:rgba(0,0,0,.4);" method="post" action="{% url 'create_voucher'  %}" autocomplete="off">
             {% csrf_token %}
             <div class="p-3">
                 <div class="row container-fluid  p-2 m-0">
@@ -349,7 +349,7 @@
             console.log(a);
             if( a== "Yes"){
                 console.log(a);
-                window.location.href="{% url 'vouch_advance' cmp.id %}"
+                window.location.href="{% url 'vouch_advance' %}"
             }
         }
 

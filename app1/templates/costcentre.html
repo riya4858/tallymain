@@ -76,7 +76,7 @@
     <h6  class="bg-info text-light p-1 ">Cost Centre Creation</h6>
     <div  style="text-align: center;margin-top:-35px;font-weight:900">{{cmp.name}}</div>
 
-<form id="myForm" action="{% url 'costcentre' cmp.id %}" method="post" class="p-5">
+<form id="myForm" action="{% url 'costcentre' %}" method="post" class="p-5">
         {% csrf_token %}
    
                     <div class="row container-fluid  p-2 m-0">
@@ -117,7 +117,7 @@
 <div class="form-popup" id="underForm" style="background-color: rgb(216, 232, 238);" >
     <form action="" class="form-container1" >
         <h6 style="background-color:rgb(17, 169, 240) ;color:white">List of Cost Centres</h6>
-        <a  href="{% url 'costcentre2' cmp.id %}" style="margin-left:180px;color:black;cursor:pointer" >Create New</a>  
+        <a  href="{% url 'costcentre2' %}" style="margin-left:180px;color:black;cursor:pointer" >Create New</a>  
 
     <hr >
     <div>

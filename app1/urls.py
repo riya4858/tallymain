@@ -4,14 +4,16 @@ from.import views
 
 urlpatterns = [
 
+    path('login',views.login,name='login'),
+    path('register',views.register,name='register'),
     path('base',views.base,name='base'),
 
 #.........................jisha..........................
     
 
-    path('ledgers/<int:pk>',views.ledgers,name='ledgers'),
+    path('ledgers',views.ledgers,name='ledgers'),
 
-    path('vouchers/<int:pk>',views.vouchers,name='vouchers'),
+    path('vouchers',views.vouchers,name='vouchers'),
 
     path('groups',views.groups,name='groups'),
 
@@ -19,11 +21,11 @@ urlpatterns = [
 
     path('cost_alt',views.cost_alt,name='cost_alt'),
 
-    path('currency/<int:pk>',views.currency,name='currency'),
+    path('currency',views.currency,name='currency'),
 
-    path('c_create/<int:pk>',views.c_create,name='c_create'),
+    path('c_create',views.c_create,name='c_create'),
 
-    path('c_alter/<int:pk>',views.c_alter,name='c_alter'),
+    path('c_alter',views.c_alter,name='c_alter'),
 
     path('cost/<int:pk>',views.cost,name='cost'),
     
@@ -77,25 +79,25 @@ urlpatterns = [
 
     path('ledger_gst',views.ledger_gst,name='ledger_gst'),
 
-    path('vouch_advance/<int:pk>',views.vouch_advance,name='vouch_advance'),
+    path('vouch_advance',views.vouch_advance,name='vouch_advance'),
 
     path('ledger_chequed',views.ledger_chequed,name='ledger_chequed'),
 
     path('create_group',views.create_group,name='create_group'),
 
-    path('create_currency/<int:pk>',views.create_currency,name='create_currency'),
+    path('create_currency',views.create_currency,name='create_currency'),
 
-    path('alter_currency/<int:pk>',views.alter_currency,name='alter_currency'),
+    path('alter_currency',views.alter_currency,name='alter_currency'),
 
     path('load_centre',views.load_centre,name='load_centre'),
 
     path('ledger_taxgst',views.ledger_taxgst,name='ledger_taxgst'),
 
-    path('create_voucher/<int:pk>',views.create_voucher,name='create_voucher'),
+    path('create_voucher',views.create_voucher,name='create_voucher'),
 
-    path('create_ROE/<int:pk>',views.create_ROE,name='create_ROE'),
+    path('create_ROE',views.create_ROE,name='create_ROE'),
 
-    path('create_ledger/<int:pk>',views.create_ledger,name='create_ledger'),
+    path('create_ledger',views.create_ledger,name='create_ledger'),
 
     path('create_ledgerdimension',views.create_ledgerdimension,name='create_ledgerdimension'),
 
@@ -213,10 +215,10 @@ urlpatterns = [
     path('company',views.company,name='company'),
     path('createcompany',views.createcompany,name='createcompany'),
     path('companycreate',views.companycreate,name='companycreate'),
-    path('group1/<int:pk>',views.group1,name='group1'),
-    path('costcentre/<int:pk>',views.costcentre,name='costcentre'),
-    path('costcentre2/<int:pk>',views.costcentre2,name='costcentre2'),
-    path('group2/<int:pk>',views.group2,name='group2'),
+    path('group1',views.group1,name='group1'),
+    path('costcentre',views.costcentre,name='costcentre'),
+    path('costcentre2',views.costcentre2,name='costcentre2'),
+    path('group2',views.group2,name='group2'),
     path('currency1/<int:pk>',views.currency1,name='currency1'),
     path('features1/<int:pk>',views.features1,name='features1'),
     path('creategroup/<int:pk>',views.creategroup,name='creategroup'),
@@ -227,7 +229,7 @@ urlpatterns = [
     path('addstatenew',views.addstatenew,name='addstatenew'),
     path('addcountry',views.addcountry,name='addcountry'),
     path('altercompany/<int:pk>',views.altercompany,name='altercompany'),
-    path('ratesofexchange/<int:pk>',views.ratesofexchange,name='ratesofexchange'),
+    path('ratesofexchange',views.ratesofexchange,name='ratesofexchange'),
     path('featurecompany/<int:pk>',views.featurecompany,name='featurecompany'),
     path('disable/<int:pk>',views.disable,name='disable'),
     path('enable/<int:pk>',views.enable,name='enable'),

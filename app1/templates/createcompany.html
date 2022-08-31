@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'index1.html' %}
     {% block body %}
     {% load static %}
     <style>
@@ -223,7 +223,7 @@
     </script>
     <div class="m-0">
         <h6  class="bg-info text-light p-2 m-0 text-center">Company Creation</h6>
-        <form class="p-3" style="background-color:rgba(0,0,0,.4);" method="post" action="{% url 'company_create' %}" autocomplete="off">
+        <form class="p-3" style="background-color:rgba(0,0,0,.4);" method="post" action="{% url 'companycreate' %}" autocomplete="off">
             {% csrf_token %}
             <div class="row container-fluid  p-0 m-0" style=" border: 1px solid rgba(128, 128, 128, 0.6);">
                 <div class="col-sm-6 m-0 p-4" style=" border-right: 1px solid rgba(128, 128, 128, 0.6);">

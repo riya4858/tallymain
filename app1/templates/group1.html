@@ -114,8 +114,6 @@
         }
         function setprimary(p){
             document.getElementById('under').value= p;
-            document.getElementById('myForm1').style.visibility= "hidden";
-
             var status = document.getElementById("under");
     var a = status.value
     console.log(a);
@@ -137,16 +135,17 @@
             document.getElementsByName('underhidden').value= underId;
         }
 </script>
+{% for i in tally %}
 <div class="row container-fluid p-3 mx-0">
     <div class="col-sm-3 m-0 p-0"></div>
     <div class="col-sm-6 m-0 p-0" style=" background-color:rgba(0,0,0,0.2);">
     <h6 class="bg-info text-light p-2">Group Creation</h6>
-    <div  style="text-align: center;margin-top:-35px;font-weight:900">{{cmp.name}}</div>
-    <div hidden  style="text-align: center;margin-top:-35px;font-weight:900">{{cmp.id}}</div>
-
-<form id="myForm" action="{% url 'group2' cmp.id %}" method="post" class="p-5">
+    <div  style="text-align: center;margin-top:-35px;font-weight:900">{{i.name}}</div>
+    <!-- <div hidden  style="text-align: center;margin-top:-35px;font-weight:900">{{cmp.id}}</div> -->
+{% endfor %}
+<form id="myForm" action="{% url 'group2' %}" method="post" class="p-5">
     {% csrf_token %}
-        <div hidden>{{cmp.id}}</div>
+        <!-- <div hidden>{{cmp.id}}</div> -->
                     <div class="row container-fluid  p-2 m-0">
                         <div class="col-sm-4 m-0 p-0"> <label for="gname">Name :</label></div>
                         <div class="col-sm-8 m-0 p-0"><input type="text" id="gname" onfocus="this.value=''" name="gname" class="form-control" placeholder="" required></div> 
@@ -247,7 +246,7 @@
 <div class="form-popup" id="myForm1" style="background-color: rgb(216, 232, 238);" >
     <form action="" class="form-container1" >
         <h6 style="background-color:rgb(17, 169, 240) ;color:white">List of Groups</h6>
-        <a  href="{% url 'group2' cmp.id %}" style="margin-left:180px;color:black;cursor:pointer" >Create New</a>  
+        <a  href="{% url 'group2' %}" style="margin-left:180px;color:black;cursor:pointer" >Create New</a>  
 
     <hr >
     <div class="scrollbar scrollbar-primary " >
@@ -289,12 +288,12 @@
 
 
 
-                                {% for i in grup %}
+        {% for i in grup %}
        
     
-                                <a class="btns_prnt" onclick="setGroup('{{i.group_name}}','{{i.id}}')"  class="content" 
-                                style="cursor:pointer;color:black;">&nbsp;&nbsp;{{i.group_name}}</a><br>
-                                {% endfor %}
+        <a class="btns_prnt" onclick="setGroup('{{i.group_name}}','{{i.id}}')"  class="content" 
+        style="cursor:pointer;color:black;">&nbsp;&nbsp;{{i.group_name}}</a><br>
+        {% endfor %}
         </tr>
         </table>
     </div>

@@ -142,7 +142,7 @@
     <div  style="text-align: center;margin-top:-35px;font-weight:900">{{cmp.name}}</div>
     <div hidden  style="text-align: center;margin-top:-35px;font-weight:900">{{cmp.id}}</div>
 
-<form id="myForm" action="{% url 'group2' cmp.id %}" method="post" class="p-5">
+<form id="myForm" action="{% url 'groups' cmp.id %}" method="post" class="p-5">
     {% csrf_token %}
         <div hidden>{{cmp.id}}</div>
                     <div class="row container-fluid  p-2 m-0">
@@ -246,7 +246,7 @@
 <div class="form-popup" id="myForm1" style="background-color: rgb(216, 232, 238);" >
     <form action="" class="form-container1" >
         <h6 style="background-color:rgb(17, 169, 240) ;color:white">List of Groups</h6>
-        <!-- <a  href="{% url 'group2' cmp.id %}" style="margin-left:180px;color:black;cursor:pointer" >Create New</a>   -->
+        <a  href="{% url 'group2' cmp.id %}" style="margin-left:180px;color:black;cursor:pointer" >Create New</a>  
 
     <hr >
     <div class="scrollbar scrollbar-primary " >

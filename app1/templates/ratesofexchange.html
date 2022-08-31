@@ -78,7 +78,7 @@
                     </tr>
                     
                      
-                      <form action="{% url 'create_ROE' cmp.id %}" method="post" >
+                      <form action="{% url 'create_ROE' %}" method="post" >
                         {% csrf_token %}
                         {% for p in curr %} 
                         <tr>

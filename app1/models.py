@@ -60,6 +60,7 @@ class Companies(models.Model):
     mobile = models.CharField(max_length=15,null=True)
     fax = models.CharField(max_length=15,null=True)
     email = models.EmailField(null=True)
+    password = models.CharField(max_length=240, null=True)
     website = models.CharField(max_length=100,null=True)
     currency_symbol = models.CharField(max_length=20)
     formal_name = models.CharField(max_length=20)

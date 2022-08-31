@@ -246,10 +246,10 @@
                   <div class="media user-box align-items-center">
                     <div class="media-body user-info">
                       <p class="user-name mb-0">
-                       
+                        {% for i in tally %}
                         {% csrf_token %}
-                        <label style="text-align: center; font-size: 15px;">abc</label>
-                       
+                        <label style="text-align: center; font-size: 15px;">{{i.name}}</label>
+                        {% endfor %}
                       </p>
                       <p class="designattion mb-0">Online</p>
                     </div>
@@ -276,7 +276,7 @@
                 <nav class="topbar-nav">
                     <ul class="metismenu" id="menu">
                         <li>
-                            <a href="{% url 'index1' %}">
+                            <a href="{% url 'base' %}">
                                 <div class="menu-title">Dashboard</div>
                             </a>
                         </li>
@@ -287,22 +287,20 @@
                               <div class="menu-title">Create</div>
                           </a>
                           <ul>
-                            <li>
+                            <!-- <li>
                                 <a href="createcompany"><i class="bx bx-right-arrow-alt"></i>Company</a>
-                                </li>
+                                </li> -->
                               <li>
                                   <a href="" class="dropdown-toggle" data-toggle="dropdown"><i class="bx bx-right-arrow-alt"></i>Accounting Masters</a>
                                   <ul>
                                       <li>
                                          
-                                        <a onclick="getVal('group1')">Group</a>
-                                          <a onclick="getVal('ledgers')">Ledger</a>
-                                          <a onclick="getVal('costcentre')">Cost centre</a>
-                                          <a onclick="getVal('currency')">Currency</a>
-                                          <a onclick="getVal('ratesofexchange')">Rates of 
-                                            Exchange
-                                          </a>
-                                          <a onclick="getVal('vouchers')">Voucher Type</a>
+                                        <a href="{% url 'group1' %}">Group</a>
+                                        <a href="{% url 'ledgers' %}">Ledger</a>
+                                          <a href="{% url 'costcentre' %}">Cost centre</a>
+                                          <a href="{% url 'currency' %}">Currency</a>
+                                          <a href="{% url 'ratesofexchange' %}">Rates of Exchange</a>
+                                          <a href="{% url 'vouchers' %}">Voucher Type</a>
                                          
                                          
                                       </li>
@@ -362,6 +360,89 @@
                       </li>
                       <li>
                         <a href="javascript:;" class="has-arrow">
+                            <div class="parent-icon"><!-- <i class="bx bx-home-alt"></i> -->
+                            </div>
+                            <div class="menu-title">STOCKS</div>
+                        </a>
+                        <ul>
+                            
+                            <li>
+                                <a href="{% url 'stockitmecreateview' %}"><i class="bx bx-right-arrow-alt"></i>Create Stock Item</a>
+                            </li>
+                            <li>
+                                <a href="i class="bx bx-right-arrow-alt"></i>Create stock Group</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'liststockviews' %}"><i class="bx bx-right-arrow-alt"></i>List of stocks</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'liststockgroupviews' %}"><i class="bx bx-right-arrow-alt"></i>List of stock group</a>
+                            </li>
+                            <li>
+                                <a href=""><i class="bx bx-right-arrow-alt"></i>Single stock group analysis</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'stockgroupanalysisview' %}"><i class="bx bx-right-arrow-alt"></i>stock group analysis</a>
+                            </li>
+                            <li>
+                                <a href=""><i class="bx bx-right-arrow-alt"></i>query stocks</a>
+                            </li>
+                            <li>
+                                <a href=""><i class="bx bx-right-arrow-alt"></i>Purchase voucher analysis</a>
+                            </li>
+                            <li>
+                                <a href=""><i class="bx bx-right-arrow-alt"></i>Sale voucher analysis</a>
+                            </li>
+                            <li>
+                                <a href=""><i class="bx bx-right-arrow-alt"></i>Item Movement analysis</a>
+                            </li>
+                           
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;" class="has-arrow">
+
+                            <div class="parent-icon"><i class='bx bx-briefcase-alt'></i>
+                            </div>
+                            <div class="menu-title">Chart Of Accounts</div>
+                        </a>
+                        <ul>
+                            <li><a href="#"><i class="bx bx-right-arrow-alt"></i>Accounting Masters</a>
+                                <ul>
+                                    <li><a href="group"><i class=" bx bx-caret-right"></i>Groups</a></li>
+                                    <li><a href="ledger"><i class=" bx bx-caret-right"></i>Ledgers</a></li>
+                                    <li><a href="voucher"><i class=" bx bx-caret-right"></i>Voucher Types</a></li>
+                                    <li><a href="costcat"><i class=" bx bx-caret-right"></i>Cost Categories</a></li>
+                                    <li><a href="costcentr"><i class=" bx bx-caret-right"></i>Cost Centres</a></li>
+                                    <li><a href="#"><i class=" bx bx-caret-right"></i>Currencies</a></li>
+                                    <li><a href="#"><i class=" bx bx-caret-right"></i>Budgets</a></li>
+                                    <li><a href="#"><i class=" bx bx-caret-right"></i>Scenarios</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#"><i class="bx bx-right-arrow-alt"></i>Inventory Master</a>
+                                <ul>
+                                    <li><a href="group"><i class=" bx bx-caret-right"></i>Stock Groups</a></li>
+                                    <li><a href="ledger"><i class=" bx bx-caret-right"></i>Stock Items</a></li>
+                                    <li><a href="#"><i class=" bx bx-caret-right"></i>Stock Categories</a></li>
+                                    <li><a href="#"><i class=" bx bx-caret-right"></i>Units</a></li>
+                                    <li><a href="#"><i class=" bx bx-caret-right"></i>Godowns</a></li>
+                                   
+                                </ul>
+                            </li>
+                            <li><a href="#"><i class="bx bx-right-arrow-alt"></i>Payroll Masters</a>
+                                <ul>
+                                    <li><a href="group"><i class=" bx bx-caret-right"></i>Employee Categories</a></li>
+                                    <li><a href="ledger"><i class=" bx bx-caret-right"></i>Employee Groups</a></li>
+                                    <li><a href="#"><i class=" bx bx-caret-right"></i>Employees</a></li>
+                                    <li><a href="#"><i class=" bx bx-caret-right"></i>Attendance/Production Types</a></li>
+                                    <li><a href="#"><i class=" bx bx-caret-right"></i>Pay Heads</a></li>
+                                   
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                      <li>
+                        <a href="javascript:;" class="has-arrow">
                             <div class="parent-icon"><i class="bx bx-file"></i>
                             </div>
                             <div class="menu-title">Alter</div>
@@ -393,6 +474,7 @@
                             </a>
                           
                         </li>
+                        
                         <li>
                             <a href="javascript:;" class="has-arrow">
 
@@ -417,14 +499,14 @@
                             </ul>
 
                         </li>
-                        <li>
+                        <!-- <li>
                             <a href="{% url 'company' %}" >
                                 <div class="parent-icon"><i class="bx bx-file"></i>
                                 </div>
                                 <div  class="menu-title" >Company</div>
                             </a>
                             
-                        </li>
+                        </li> -->
                         <li>
                             <a data-toggle="modal" data-target="#myModal" href="javascript:;" class="has-arrow">
 
@@ -526,7 +608,7 @@
                         {% csrf_token %}
                         <div>
                             <table id="table" class="table">
-                            {% for i in comp %}
+                            {% for i in tally %}
                             {%if i.status == 1 %}
                             <tr>
                                 
@@ -601,7 +683,7 @@
         </div>
         </div> <!--end of modal-->
 
-
+<!-- 
         <div class="page-wrapper">
             <div class="page-content-wrapper" style="background-color: #2f516f;">
                 <div class="container pt-3">
@@ -616,7 +698,7 @@
                         </div>
                     </div>
                     {% endif %} {% endfor %}
-                </div>
+                </div> -->
              
 
             </div>
