@@ -5,6 +5,7 @@ from.import views
 urlpatterns = [
 
     path('login',views.login,name='login'),
+    path('logout',views.logout,name='logout'),
     path('register',views.register,name='register'),
     path('base',views.base,name='base'),
 
@@ -365,7 +366,16 @@ urlpatterns = [
     path('debi',views.debi,name='debi'),
     path('ledgercreations',views.ledgercreations,name='ledgercreations'),
     path('ledgerlist',views.ledgerlist,name='ledgerlist'),
-    path('nw',views.nw,name='nw')
+    path('nw',views.nw,name='nw'),
+    
+    # balancesheet-riya
+    
+    path('balancesheet',views.balancesheet,name='balancesheet'),
+    path('balancesheet_asset',views.balancesheet_asset,name='balancesheet_asset'),
+    path('capitalacc',views.capitalacc,name='capitalacc'),
+    path('monthly_summary/<int:pk>',views.monthly_summary,name='monthly_summary'),
+    path('ledgervouchers',views.ledgervouchers,name='ledgervouchers'),
+    path('ledger_vouchers',views.ledger_vouchers,name='ledger_vouchers'),
 
 
 

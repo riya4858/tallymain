@@ -803,3 +803,16 @@ class led(models.Model):
     penam=models.IntegerField()
     due=models.DateField()
     overd=models.IntegerField() 
+    
+    
+  #balancesheet-riya  
+class Ledger_vouchers(models.Model):
+    ledger = models.ForeignKey(tally_ledger, on_delete=models.CASCADE, blank=True,null=True)
+    company=models.ForeignKey(Companies,on_delete=models.CASCADE,blank=True,null=True)
+    date=models.DateField()
+    particulars=models.CharField(max_length=225)
+    account=models.CharField(max_length=225,null=True)
+    voucher_type=models.CharField(max_length=225,null=True)
+    voucher_no=models.CharField(max_length=225)
+    debit=models.CharField(max_length=225)
+    credit=models.CharField(max_length=225)

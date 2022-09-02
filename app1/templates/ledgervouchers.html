@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block body %}
+
+
+
+<style>
+  ::-moz-selection { /* Code for Firefox */
+    color: red;
+    background: yellow;
+  }
+  
+  ::selection {
+    color: red;
+    background: yellow;
+  }
+    .flexy{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .btns_prnt {
+        width: 100%;
+       
+        background-color: rgba(240, 248, 255, 0);
+        border: none;
+        /* padding: 6px; */
+    
+    }
+    .btns_prnt:hover{
+        background-color:rgb(44, 158, 187);
+        color: rgb(15, 14, 14);
+    }
+
+
+</style>
+
+
+
+<div class="row container-fluid p-2 mx-0">
+    <div class="col-sm-1 m-0 p-0"></div>
+    <div class="col-sm-10 m-0 p-0" style=" background-color:rgba(0,0,0,0.4);height: 400px;">
+        <!-- <a href="javascript:history.go(-1);" class="close">+</a> -->
+        <div  class="bg-info text-light p-2 ">Ledger Vouchers</div><br>
+        <div  style="text-align: center;margin-top:-49px;font-weight:900">{{cmp.name}}</div>
+        <br>
+        
+        <div style="margin-left:18px;font-size:14px">Ledger: <b>capital</b></div>
+       
+                        <div style="text-align: right; margin-top:-18px;margin-right:18px;font-size:14px">{{cmp.fin_begin}}</div>
+<hr>
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Particulars</th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <th scope="col">Vch Type</th>
+        <th scope="col">Vch No</th>
+        <th scope="col">Debit</th>
+        <th scope="col">Credit</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in led %}
+      
+      <tr >
+        <th  scope="row">{{i.date}}</th>
+        <td>{{i.account}}</td>
+        <td>{{i.voucher_type}}</td>
+        <td>{{i.voucher_no}}</td>
+        <td>{{i.debit}}</td>
+        <td>{{i.credit}}</td>
+      </tr>
+    </div>
+      {% endfor %}
+      <tr>
+        <td colspan="6">
+          Grand Total:
+          </td>
+          <td colspan="2">
+         
+           </td>
+          <td colspan="3">2000000<center>
+           </center>
+           </td> 
+         </tr> 
+    </tbody>
+  </table>
+<hr>
+
+<table class="table">
+  <tr>
+      <td >Opening Balance</td><td>200000</td><br>
+      <td >Current Total</td><td></td><br>
+      <td >Closing Balance</td><td></td>
+  </tr>
+</table>
+
+<button type="button" onclick="myFunction()">Select</button>
+<button type="button" onclick="myFunction()">Delete</button>
+<button type="button" onclick="myFunction()">Remove line</button>
+<button type="button" onclick="myFunction()">Restore line</button>
+
+<script>
+  function myFunction(){
+
+  }
+</script>
+
+<div class="col-sm-4  m-0 p-0"></div>
+
+</div> 
+
+
+
+
+
+{% endblock %}
+

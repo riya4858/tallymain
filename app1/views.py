@@ -57,6 +57,13 @@ def login(request):
 
     return render(request, 'Login.html')
 
+def logout(request):
+    if 't_id' in request.session:  
+        request.session.flush()
+        return redirect('/')
+    else:
+        return redirect('/')
+
 def register(request):
     return render(request, 'Register.html')
 
@@ -2116,24 +2123,52 @@ def productcategory(request):
 #......................Praveen........................
 
 def list_of_ledger(request):
-    led=tally_ledger.objects.all()
-    context={'led':led}
-    return render(request,'list_of_ledger.html',context)
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        led=tally_ledger.objects.all()
+        context={'led':led}
+        return render(request,'list_of_ledger.html',context)
+    return redirect('/')
 
 def list_of_groups(request):
-	grup=tally_group.objects.all()
-	context={'grup':grup}
-	return render(request,'list_of_groups.html',context)
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        grup=tally_group.objects.filter(id=t_id)
+        context={'grup':grup,'tally':tally}
+        return render(request,'list_of_groups.html',context)
+    return redirect('/')
 
 def list_of_voucher_type(request):
-    vou=Voucher.objects.all()
-    context={'vou':vou}
-    return render(request,'list_of_voucher_type.html',context)
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        vou=Voucher.objects.filter(id=t_id)
+        context={'vou':vou,'tally':tally}
+        return render(request,'list_of_voucher_type.html',context)
+    return redirect('/')
 
 def list_of_currency(request):
-    curr=currencyAlteration.objects.all()
-    context={'curr':curr}
-    return render(request,'list_of_currency.html',context)
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        curr=currencyAlteration.objects.filter(id=t_id)
+        context={'curr':curr,'tally':tally}
+        return render(request,'list_of_currency.html',context)
+    return redirect('/')
 
 def companyCreate1(request):
     return render(request,'create_companys.html')
@@ -2215,82 +2250,105 @@ def enable2(request,pk):
     return redirect('shut_company')
 
 def list_of_cost_centers(request):
-    cst=cost_center.objects.all()
-    return render(request,'list_of_cost_centers.html',{'cst':cst})
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        cst=cost_centre.objects.filter(id=t_id)
+        return render(request,'list_of_cost_centers.html',{'cst':cst,'tally':tally})
+    return redirect('/')
 
 # def shut_card(request):
 #     return render(request,'shut_card.html')
 
 def load_ledger_alter(request,pk):
-    led=tally_ledger.objects.get(id=pk)
-    lga=tally_group.objects.all()
-    if request.method=='POST':
-        led.name=request.POST.get('name')
-        led.alias=request.POST.get('alias')
-        led.under=request.POST.get('under')
-        led.mname=request.POST.get('mailingname')
-        led.address=request.POST.get('address')
-        led.state=request.POST.get('state')
-        led.country=request.POST.get('country')
-        led.pincode=request.POST.get('pincode')
-        led.pan_no=request.POST.get('pan_no')
-        led.bank_details=request.POST.get('bank_details')
-        led.registration_type=request.POST.get('registration_type')
-        led.gst_uin=request.POST.get('gst_uin')
-        led.opening_blnc=request.POST.get('opening_blnc')
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        led=tally_ledger.objects.get(id=pk)
+        lga=tally_group.objects.filter(id=t_id)
+        if request.method=='POST':
+            led.name=request.POST.get('name')
+            led.alias=request.POST.get('alias')
+            led.under=request.POST.get('under')
+            led.mname=request.POST.get('mailingname')
+            led.address=request.POST.get('address')
+            led.state=request.POST.get('state')
+            led.country=request.POST.get('country')
+            led.pincode=request.POST.get('pincode')
+            led.pan_no=request.POST.get('pan_no')
+            led.bank_details=request.POST.get('bank_details')
+            led.registration_type=request.POST.get('registration_type')
+            led.gst_uin=request.POST.get('gst_uin')
+            led.opening_blnc=request.POST.get('opening_blnc')
 
-        led.set_odl=request.POST.get('set_odl')
-        led.aac_holder_nm=request.POST.get('ac_holder_nm')
-        led.acc_no=request.POST.get('acc_no')
-        led.ifsc_code=request.POST.get('ifsc_code')
-        led.swift_code=request.POST.get('swift_code')
-        led.bank_name=request.POST.get('bank_name')
-        led.branch=request.POST.get('branch')
-        led.SA_cheque_bk=request.POST.get('SA_cheque_bk')
-        led.Echeque_p=request.POST.get('Echeque_p')
-        led.SA_chequeP_con=request.POST.get('SA_chequeP_con')
-        led.save()
-        print("added")
-        return redirect('/')
-    return render(request,'load_ledger_alter.html',{'i':led,'lga':lga})
+            led.set_odl=request.POST.get('set_odl')
+            led.aac_holder_nm=request.POST.get('ac_holder_nm')
+            led.acc_no=request.POST.get('acc_no')
+            led.ifsc_code=request.POST.get('ifsc_code')
+            led.swift_code=request.POST.get('swift_code')
+            led.bank_name=request.POST.get('bank_name')
+            led.branch=request.POST.get('branch')
+            led.SA_cheque_bk=request.POST.get('SA_cheque_bk')
+            led.Echeque_p=request.POST.get('Echeque_p')
+            led.SA_chequeP_con=request.POST.get('SA_chequeP_con')
+            led.company_id=t_id
+            led.save()
+            print("added")
+            return redirect('/')
+        return render(request,'load_ledger_alter.html',{'i':led,'lga':lga,'tally':tally})
+    return redirect('/')
+
 
 def load_create_ledger(request):
-    lg=tally_group.objects.all()
-    if request.method=='POST':
-        nm=request.POST.get('name')
-        als=request.POST.get('alias')
-        under=request.POST.get('under')
-        mname=request.POST.get('mailingname')
-        adr=request.POST.get('address')
-        st=request.POST.get('state')
-        cntry=request.POST.get('country')
-        pin=request.POST.get('pincode')
-        pno=request.POST.get('pan_no')
-        bdetls=request.POST.get('bank_details')
-        rtype=request.POST.get('registration_type')
-        gst_uin=request.POST.get('gst_uin')
-        opnbn=request.POST.get('opening_blnc')
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        lg=tally_group.objects.filter(id=t_id)
+        if request.method=='POST':
+            nm=request.POST.get('name')
+            als=request.POST.get('alias')
+            under=request.POST.get('under')
+            mname=request.POST.get('mailingname')
+            adr=request.POST.get('address')
+            st=request.POST.get('state')
+            cntry=request.POST.get('country')
+            pin=request.POST.get('pincode')
+            pno=request.POST.get('pan_no')
+            bdetls=request.POST.get('bank_details')
+            rtype=request.POST.get('registration_type')
+            gst_uin=request.POST.get('gst_uin')
+            opnbn=request.POST.get('opening_blnc')
 
-        spdl=request.POST.get('set_odl')
-        achnm=request.POST.get('ac_holder_nm')
-        acno=request.POST.get('acc_no')
-        ifsc=request.POST.get('ifsc_code')
-        scode=request.POST.get('swift_code')
-        bn=request.POST.get('bank_name')
-        brnch=request.POST.get('branch')
-        sacbk=request.POST.get('SA_cheque_bk')
-        ecp=request.POST.get('Echeque_p')
-        sacpc=request.POST.get('SA_chequeP_con')
+            spdl=request.POST.get('set_odl')
+            achnm=request.POST.get('ac_holder_nm')
+            acno=request.POST.get('acc_no')
+            ifsc=request.POST.get('ifsc_code')
+            scode=request.POST.get('swift_code')
+            bn=request.POST.get('bank_name')
+            brnch=request.POST.get('branch')
+            sacbk=request.POST.get('SA_cheque_bk')
+            ecp=request.POST.get('Echeque_p')
+            sacpc=request.POST.get('SA_chequeP_con')
+            
+            ldr=tally_ledger(name=nm,alias=als,under=under,mname=mname,address=adr,state=st,country=cntry,
+                            pincode=pin,pan_no=pno,bank_details=bdetls,registration_type=rtype,gst_uin=gst_uin,
+                            opening_blnc=opnbn,set_odl=spdl,ac_holder_nm=achnm,acc_no=acno,ifsc_code=ifsc,swift_code=scode,
+                            bank_name=bn,branch=brnch,SA_cheque_bk=sacbk,Echeque_p=ecp,SA_chequeP_con=sacpc,company_id=t_id)
+            
+            ldr.save()
+            return redirect('base')
         
-        ldr=tally_ledger(name=nm,alias=als,under=under,mname=mname,address=adr,state=st,country=cntry,
-						pincode=pin,pan_no=pno,bank_details=bdetls,registration_type=rtype,gst_uin=gst_uin,
-						opening_blnc=opnbn,set_odl=spdl,ac_holder_nm=achnm,acc_no=acno,ifsc_code=ifsc,swift_code=scode,
-						bank_name=bn,branch=brnch,SA_cheque_bk=sacbk,Echeque_p=ecp,SA_chequeP_con=sacpc)
-		
-        ldr.save()
-        return redirect('/')
-    
-    return render(request,'load_create_ledger.html',{'lg':lg})
+        return render(request,'load_create_ledger.html',{'lg':lg,'tally':tally})
+    return redirect('/')
 
 def ledger_gst_details(request):
     return render(request,'ledger_gst_details.html')
@@ -2335,86 +2393,109 @@ def ledger_bank_details(request):
     return render(request,'ledger_bank_details.html')
 
 def load_create_groups(request,pk):
-    grup=tally_group.objects.get(id=pk)
-    if request.method=='POST':
-        grup.group_name=request.POST['gname']
-        grup.group_alias=request.POST['alias']
-        grup.group_under=request.POST['group']
-        grup.nature=request.POST['group_nature']
-        grup.gross_profit=request.POST['gorss_profit']
-        grup.sub_ledger=request.POST['ledger']
-        grup.debit_credit=request.POST['debit/credit']
-        grup.calculation=request.POST['calculation']
-        grup.invoice=request.POST['invoice']
-                 
-        grup.save()
-        print("added")
-        return redirect('/')
-    return render(request,'load_create_groups.html',{'i':grup})
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        grup=tally_group.objects.get(id=pk)
+        if request.method=='POST':
+            grup.group_name=request.POST['gname']
+            grup.group_alias=request.POST['alias']
+            grup.group_under=request.POST['group']
+            grup.nature=request.POST['group_nature']
+            grup.gross_profit=request.POST['gorss_profit']
+            grup.sub_ledger=request.POST['ledger']
+            grup.debit_credit=request.POST['debit/credit']
+            grup.calculation=request.POST['calculation']
+            grup.invoice=request.POST['invoice']
+            grup.company_id=t_id
+            grup.save()
+            print("added")
+            return redirect('/')
+        return render(request,'load_create_groups.html',{'i':grup,'tally':tally})
+    return redirect('/')
 
 def load_alter_groups(request):
     return render(request,'load_create_groups.html')
 
 def load_create_ledger2(request):
-    if request.method=='POST':
-        gname=request.POST['gname']
-        galias=request.POST['alias']
-        under=request.POST['group']
-        nature=request.POST['group_nature']
-        gross=request.POST['gorss_profit']
-        ledg=request.POST['ledger']
-        cred=request.POST['debit/credit']
-        calc=request.POST['calculation']
-        invc=request.POST['invoice']
-        grp=tally_group(group_name=gname,
-                group_alias=galias,
-                group_under=under,
-                nature=nature,
-                gross_profit=gross,
-                sub_ledger=ledg,
-                debit_credit=cred,
-                calculation=calc,
-                invoice=invc,
-                )          
-        grp.save()
-        print("added")
-        return redirect('/')
-    return render(request,'load_create_ledger2.html')
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        if request.method=='POST':
+            gname=request.POST['gname']
+            galias=request.POST['alias']
+            under=request.POST['group']
+            nature=request.POST['group_nature']
+            gross=request.POST['gorss_profit']
+            ledg=request.POST['ledger']
+            cred=request.POST['debit/credit']
+            calc=request.POST['calculation']
+            invc=request.POST['invoice']
+            grp=tally_group(group_name=gname,
+                    group_alias=galias,
+                    group_under=under,
+                    nature=nature,
+                    gross_profit=gross,
+                    sub_ledger=ledg,
+                    debit_credit=cred,
+                    calculation=calc,
+                    invoice=invc,
+                    company_id=t_id
+                    )          
+            grp.save()
+            print("added")
+            return redirect('base')
+        return render(request,'load_create_ledger2.html',{'tally':tally})
+    return redirect('/')
+
 
 def load_voucher_type(request,pk):
-    vou=Voucher.objects.get(id=pk)
-    if request.method=='POST':
-        vou.voucher_name=request.POST['vname']
-        vou.alias=request.POST['valias']
-        vou.voucher_type=request.POST['vtype']
-        vou.abbreviation=request.POST['vabbre']
-        vou.voucherActivate=request.POST['vactive']
-        vou.voucherNumber=request.POST['vnum']
-        vou.preventDuplicate=request.POST['vprev']
-        vou.advance_con=request.POST['advcon'] 
-        vou.voucherEffective=request.POST['effct']
-        vou.transaction=request.POST['trans']
-        vou.make_optional=request.POST['opt']
-        vou.voucherNarration=request.POST['narrate']
-        vou.provideNarration=request.POST['provide']
-        vou.manu_jrnl=request.POST['journal']
-        vou.track_purchase=request.POST['purchase']
-        vou.enable_acc=request.POST['allocate']
-        vou.prnt_VA_save=request.POST['vprint']
-        vou.jurisdiction=request.POST['juri']
-        vou.pos_invoice=request.POST['pos']
-        vou.msg_1=request.POST['msg1']
-        vou.msg_2=request.POST['msg2']
-        vou.default_bank=request.POST['vbank']
-        vou.title_print=request.POST['vtitle']
-        vou.setAlter=request.POST['vsetalt']
-        
-        
-        
-        vou.save()
-        print("added")
-        return redirect('/')
-    return render(request,'load_voucher_type.html',{'i':vou})
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        vou=Voucher.objects.get(id=pk)
+        if request.method=='POST':
+            vou.voucher_name=request.POST['vname']
+            vou.alias=request.POST['valias']
+            vou.voucher_type=request.POST['vtype']
+            vou.abbreviation=request.POST['vabbre']
+            vou.voucherActivate=request.POST['vactive']
+            vou.voucherNumber=request.POST['vnum']
+            vou.preventDuplicate=request.POST['vprev']
+            vou.advance_con=request.POST['advcon'] 
+            vou.voucherEffective=request.POST['effct']
+            vou.transaction=request.POST['trans']
+            vou.make_optional=request.POST['opt']
+            vou.voucherNarration=request.POST['narrate']
+            vou.provideNarration=request.POST['provide']
+            vou.manu_jrnl=request.POST['journal']
+            vou.track_purchase=request.POST['purchase']
+            vou.enable_acc=request.POST['allocate']
+            vou.prnt_VA_save=request.POST['vprint']
+            vou.jurisdiction=request.POST['juri']
+            vou.pos_invoice=request.POST['pos']
+            vou.msg_1=request.POST['msg1']
+            vou.msg_2=request.POST['msg2']
+            vou.default_bank=request.POST['vbank']
+            vou.title_print=request.POST['vtitle']
+            vou.setAlter=request.POST['vsetalt']
+            vou.company_id=t_id
+            
+            
+            vou.save()
+            print("added")
+            return redirect('base')
+        return render(request,'load_voucher_type.html',{'i':vou})
+    return redirect('/')
 
 def voucher_type_alteration_secondary(request):
     return render(request,'voucher_type_alteration_secondary.html')
@@ -2541,25 +2622,32 @@ def company_feature_form(request,pk):
     return render(request,'company_feature_form.html',{'com':id})
 
 def load_rates_of_exchange(request):
-    curcc=currencyAlteration.objects.all()
-    rat=rateofexchange.objects.all()
-    if request.method=='POST':
-        
-        curncy=request.POST['curname']
-        
-        cstdrate=request.POST['stdr']
-        csrate=request.POST['sr']
-        bsrate=request.POST['sr2']
-        raex=rateofexchange(
-                          
-                          std_rate=cstdrate,
-                          sell_specified_rate=csrate,
-                          buy_specified_rate=bsrate,
-                          currencyName=curncy,)
-        raex.save()
-        print("added")
-        return redirect('/')
-    return render(request,'load_rates_of_exchange.html',{'curcc':curcc,'rat':rat})
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        curcc=currencyAlteration.objects.filter(id=t_id)
+        rat=rateofexchange.objects.filter(id=t_id)
+        if request.method=='POST':
+            
+            curncy=request.POST['curname']
+            
+            cstdrate=request.POST['stdr']
+            csrate=request.POST['sr']
+            bsrate=request.POST['sr2']
+            raex=rateofexchange(
+                            
+                            std_rate=cstdrate,
+                            sell_specified_rate=csrate,
+                            buy_specified_rate=bsrate,
+                            currencyName=curncy,company_id=t_id)
+            raex.save()
+            print("added")
+            return redirect('base')
+        return render(request,'load_rates_of_exchange.html',{'curcc':curcc,'rat':rat,'tally':tally})
+    return redirect('/')
 
 def create_currency3(request):
     
@@ -2567,97 +2655,125 @@ def create_currency3(request):
     return render(request,'create_currency.html')
 
 def load_cost_centers(request,pk):
-    cst=cost_center.objects.get(id=pk)
-    ccst=cost_center.objects.all()
-    if request.method=='POST':
-        cst.c_name=request.POST['cname']
-        cst.cost_alias=request.POST['calias']
-        cst.under=request.POST['cunder']
-        
-        cst.save()
-        print("added")
-        return redirect('/')
-    return render(request,'load_cost_centers.html',{'i':cst,'ccst':ccst})
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        cst=cost_centre.objects.get(id=pk)
+        ccst=cost_centre.objects.filter(id=t_id)
+        if request.method=='POST':
+            cst.c_name=request.POST['cname']
+            cst.cost_alias=request.POST['calias']
+            cst.under=request.POST['cunder']
+            cst.company_id=t_id
+            cst.save()
+            print("added")
+            return redirect('/')
+        return render(request,'load_cost_centers.html',{'i':cst,'ccst':ccst,'tally':tally})
+    return redirect('/')
 
 def alter_cost_create(request):
-    ccst=cost_center.objects.all()
-    if request.method=='POST':
-        cname=request.POST['cname']
-        calias=request.POST['calias']
-        cunder=request.POST['cunder']
-        cost=cost_center(c_name=cname,
-                cost_alias=calias,
-                under=cunder,
-                )
-        cost.save()
-        print("added")
-        return redirect('alter_cost_create')
-    return render(request,'alter_cost_create.html',{'ccst':ccst})
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        ccst=cost_center.objects.filter(id=t_id)
+        if request.method=='POST':
+            cname=request.POST['cname']
+            calias=request.POST['calias']
+            cunder=request.POST['cunder']
+            cost=cost_centre(c_name=cname,
+                    cost_alias=calias,
+                    under=cunder,company_id=t_id
+                    )
+            cost.save()
+            print("added")
+            return redirect('alter_cost_create')
+        return render(request,'alter_cost_create.html',{'ccst':ccst,'tally':tally})
+    return redirect('/')
 
 def load_alter_currency(request):
-    if request.method=='POST':
-        casymbol=request.POST['symbol']
-        caname=request.POST['name']
-        caiso=request.POST['iso']
-        canumdec=request.POST['numdec']
-        caamount=request.POST['amount']
-        casuffix=request.POST['suffix']
-        casymam=request.POST['symam']
-        caamodec=request.POST['amodec']
-        cadecwo=request.POST['decwo']
-        ca=currencyAlteration(Symbol=casymbol,
-                              FormalName=caname,
-                              ISOCurrency=caiso,
-                              DecimalPlace=canumdec,
-                              showAmount=caamount,
-                              suffixSymbol=casuffix,
-                              AddSpace=casymam,
-                              wordRep=caamodec,
-                              DecimalWords=cadecwo)
-        ca.save()
-        print("hi")
-        return redirect('list_of_currency')
-    return render(request,'load_alter_currency.html')
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        if request.method=='POST':
+            casymbol=request.POST['symbol']
+            caname=request.POST['name']
+            caiso=request.POST['iso']
+            canumdec=request.POST['numdec']
+            caamount=request.POST['amount']
+            casuffix=request.POST['suffix']
+            casymam=request.POST['symam']
+            caamodec=request.POST['amodec']
+            cadecwo=request.POST['decwo']
+            ca=currencyAlteration(Symbol=casymbol,
+                                FormalName=caname,
+                                ISOCurrency=caiso,
+                                DecimalPlace=canumdec,
+                                showAmount=caamount,
+                                suffixSymbol=casuffix,
+                                AddSpace=casymam,
+                                wordRep=caamodec,
+                                DecimalWords=cadecwo,company_id=t_id)
+            ca.save()
+            print("hi")
+            return redirect('list_of_currency')
+        return render(request,'load_alter_currency.html',{'tally':tally})
+    return redirect('/')
 
 def currency_alteraion(request,pk):
-    calt=currencyAlteration.objects.get(id=pk)
-    if request.method=='POST':
-        calt.Symbol=request.POST.get('symbol')
-        calt.FormalName=request.POST.get('name')
-        calt.ISOCurrency=request.POST.get('iso')
-        calt.DecimalPlace=request.POST.get('numdec')
-        calt.showAmount=request.POST.get('amount')
-        calt.suffixSymbol=request.POST.get('suffix')
-        calt.AddSpace=request.POST.get('symam')
-        calt.wordRep=request.POST.get('amodec')
-        calt.DecimalWords=request.POST.get('decwo')
-        
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        calt=currencyAlteration.objects.get(id=pk)
+        if request.method=='POST':
+            calt.Symbol=request.POST.get('symbol')
+            calt.FormalName=request.POST.get('name')
+            calt.ISOCurrency=request.POST.get('iso')
+            calt.DecimalPlace=request.POST.get('numdec')
+            calt.showAmount=request.POST.get('amount')
+            calt.suffixSymbol=request.POST.get('suffix')
+            calt.AddSpace=request.POST.get('symam')
+            calt.wordRep=request.POST.get('amodec')
+            calt.DecimalWords=request.POST.get('decwo')
+            
 
-        stadate=request.POST.get('standate')
-        starate=request.POST.get('stdrate')
-        seldate=request.POST.get('selldate')
-        selvrate=request.POST.get('selvrate')
-        selrate=request.POST.get('selsrate')
-        buydate=request.POST.get('buydate')
-        buyvrate=request.POST.get('buyvrate')
-        buyrate=request.POST.get('buysrate')
+            stadate=request.POST.get('standate')
+            starate=request.POST.get('stdrate')
+            seldate=request.POST.get('selldate')
+            selvrate=request.POST.get('selvrate')
+            selrate=request.POST.get('selsrate')
+            buydate=request.POST.get('buydate')
+            buyvrate=request.POST.get('buyvrate')
+            buyrate=request.POST.get('buysrate')
 
-        al=Currency_alt(stddate=stadate,
-                        stdrate=starate,
-                        selldate=seldate,
-                        selvorate=selvrate,
-                        sellrate=selrate,
-                        buydate=buydate,
-                        buyvorate=buyvrate,
-                        buyrate=buyrate,
-                        currencyAlteration_id=pk,)
-       
+            al=Currency_alt(stddate=stadate,
+                            stdrate=starate,
+                            selldate=seldate,
+                            selvorate=selvrate,
+                            sellrate=selrate,
+                            buydate=buydate,
+                            buyvorate=buyvrate,
+                            buyrate=buyrate,
+                            currencyAlteration_id=pk,company_id=t_id)
         
-        al.save()
-        calt.save()
-        print("added")
-        return redirect('list_of_currency')
-    return render(request,'currency_alteraion.html',{'i':calt})
+            
+            al.save()
+            calt.save()
+            print("added")
+            return redirect('list_of_currency')
+        return render(request,'currency_alteraion.html',{'i':calt})
+    return redirect('/')
 
 
 def gst_details3(request,pk):
@@ -4101,21 +4217,42 @@ def stock_item_allocations(request):
 #......................Ann........................
 
 def disp_more_reports(request):#ann
-    com=Companies.objects.all()
-    return render(request,'dispmorereprt.html')
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        com=Companies.objects.filter(id=t_id)
+        return render(request,'dispmorereprt.html',{'com':com})
+    return redirect('/')
 
 def salesregister(request):#ann
-    credit=Sales.objects.all().annotate(month=TruncMonth('sales_date')).values('month').annotate(total=Sum('total')).order_by('month').values("month", "total")                 # Select the count of the grouping       
-    sales=Sales.objects.all()
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        credit=Sales.objects.filter(id=t_id).annotate(month=TruncMonth('sales_date')).values('month').annotate(total=Sum('total')).order_by('month').values("month", "total")                 # Select the count of the grouping       
+        sales=Sales.objects.filter(id=t_id)
           
-    total1 = sum(sales.values_list('total', flat=True)) 
-    return render(request,'salesregister.html',{'sales':sales,'total1':total1,'credit':credit})
+        total1 = sum(sales.values_list('total', flat=True)) 
+        return render(request,'salesregister.html',{'sales':sales,'total1':total1,'credit':credit})
+    return redirect('/')
 
 def purchaseregister(request):#ann
-    p=Purchase.objects.all()
-    credit=Purchase.objects.all().annotate(month=TruncMonth('purchase_date')).values('month').annotate(total=Sum('total')).order_by('month').values("month", "total")                 # Select the count of the grouping       
-    total1 = sum(p.values_list('total', flat=True))  
-    return render(request,'purchaseregister.html',{'total1':total1,'credit':credit})  
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        p=Purchase.objects.filter(id=t_id)
+        credit=Purchase.objects.filter(id=t_id).annotate(month=TruncMonth('purchase_date')).values('month').annotate(total=Sum('total')).order_by('month').values("month", "total")                 # Select the count of the grouping       
+        total1 = sum(p.values_list('total', flat=True))  
+        return render(request,'purchaseregister.html',{'total1':total1,'credit':credit})  
+    return redirect('/')
 
 def listofsalesvouchers(request):#ann
     com=Companies.objects.all()
@@ -4620,3 +4757,92 @@ def ledgercreations(request):
 def nw(request):
     ledi=led.objects.all()
     return render(request,'nw.html',{'ledg':ledi})
+
+
+# balancesheet- riya
+
+def balancesheet(request):
+    comp=Companies.objects.all()
+    return render(request,'balancesheet.html',{'comp':comp})
+
+def balancesheet_asset(request):
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        led=Ledger_vouchers.objects.all()
+        return render(request,'balancesheet_asset.html',{'cmp':tally,'led':led})
+    else:
+            return redirect('/')
+
+def capitalacc(request):
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        ld=Ledger_vouchers.objects.all()
+        ledg=Ledger_vouchers.objects.raw('SELECT app1_tally_ledger.id,app1_tally_ledger.name,sum(app1_ledger_vouchers.debit) as debit,sum(app1_ledger_vouchers.credit) as credit FROM `app1_ledger_vouchers` inner join app1_tally_ledger on app1_ledger_vouchers.ledger_id=app1_tally_ledger.id group by app1_ledger_vouchers.ledger_id')
+        return render(request,'groupsummary.html',{'cmp':tally,'led':ledg})
+    else:
+            return redirect('/')
+
+def monthly_summary(request,pk):
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')  
+        tally = Companies.objects.filter(id=t_id)  
+        ledg=Ledger_vouchers.objects.raw('SELECT app1_tally_ledger.id,monthname( app1_ledger_vouchers.date) as date,case when sum(app1_ledger_vouchers.debit) =0 then 0 else sum(app1_ledger_vouchers.debit) end as debit,case when sum(app1_ledger_vouchers.credit)=0 then 0 else sum(app1_ledger_vouchers.credit) end as credit FROM `app1_ledger_vouchers` inner join app1_tally_ledger on app1_ledger_vouchers.ledger_id=app1_tally_ledger.id where app1_tally_ledger.id=3 and month(app1_ledger_vouchers.date)>=4 group by app1_ledger_vouchers.date')
+        
+        ld=tally_ledger.objects.filter(id=pk)
+        return render(request,'monthlysummary.html',{'cmp':tally,'led':ledg,'ld':ld})
+    else:
+            return redirect('/')
+
+
+def ledgervouchers(request):
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        ledg=Ledger_vouchers.objects.raw('SELECT app1_tally_ledger.id,app1_ledger_vouchers.date as date,app1_ledger_vouchers.account as account,app1_ledger_vouchers.voucher_no as voucher_no,app1_ledger_vouchers.voucher_type as voucher_type, app1_tally_ledger.name,app1_ledger_vouchers.debit as debit,app1_ledger_vouchers.credit as credit FROM `app1_ledger_vouchers` inner join app1_tally_ledger on app1_ledger_vouchers.ledger_id=app1_tally_ledger.id ')
+        return render(request,'ledgervouchers.html',{'cmp':tally,'led':ledg})
+    else:
+            return redirect('/')
+
+
+def ledger_vouchers(request):
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        led=tally_ledger.objects.all()
+        if request.method == 'POST':
+            
+            
+            date = request.POST['date']
+            particulars = request.POST['particulars']
+            categ=tally_ledger.objects.get(id=particulars)
+            account = request.POST['account']
+            vtype = request.POST['vtype']
+            vno = request.POST['vno']
+            debit = request.POST['debit']
+            credit = request.POST['credit']
+            
+                
+            data = Ledger_vouchers(date=date,account=account,voucher_type=vtype,voucher_no=vno,debit=debit,
+                                credit=credit,company_id=t_id,ledger=categ)
+            data.save()
+            return redirect('capitalacc')
+        return render(request,'ledger_vouchers.html',{'cmp':tally,'led':led})
+    else:
+            return redirect('/')

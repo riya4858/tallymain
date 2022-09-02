@@ -261,7 +261,7 @@
                                 <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#"><i class="bx bx-user"></i><span>Profile</span></a>
                                     <a class="dropdown-item" href="#"><i class="bx bx-tachometer"></i><span>Dashboard</span></a>
                                     <div class="dropdown-divider mb-0"></div>
-                                    <a class="dropdown-item" href="#"><i class="bx bx-power-off"></i><span>Logout</span></a>
+                                    <a class="dropdown-item" href="{% url 'logout' %}"><i class="bx bx-power-off"></i><span>Logout</span></a>
                                 </div>
                               
                             </li>
@@ -474,7 +474,12 @@
                             </a>
                           
                         </li>
-                        
+                        <li>
+                            <a href="{% url 'balancesheet_asset' %}" class="">
+                               
+                                <div class="menu-title">Balance Sheet</div>
+                            </a>
+                        </li>
                         <li>
                             <a href="javascript:;" class="has-arrow">
 
