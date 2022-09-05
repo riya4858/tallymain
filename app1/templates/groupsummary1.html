@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load mathfilters %}
     {% block body %}
     {% load static %}
     <style>
@@ -85,101 +84,99 @@
             background-color:rgb(44, 158, 187);
             color: rgb(15, 14, 14);
         }
+       
     </style>
  
     <!-- <script src="{% static 'js/ledger.js' %}"></script> -->
 
-    <div class="row container-fluid p-2 mx-0">
+    <div class="row container-fluid p-3 mx-0">
         <div class="col-sm-2 m-0 p-0"></div>
-        <div class="col-sm-8 m-0 p-0" style=" background-color:rgba(0,0,0,0.4);height: 600px;">
-            <!-- <a href="javascript:history.go(-1);" class="close">+</a> -->
-            <div  class="bg-info text-light p-2 ">Ledger Monthly Summary</div><br>
-            {% for i in cmp %}
-            <div  style="text-align: center;margin-top:-49px;font-weight:900">{{i.name}}</div>
-            {% endfor %}
-   <br>
-        <form   method="post" action="" autocomplete="off">
+        <div class="col-sm-8 m-0 p-0" style="background-color:rgba(0,0,0,.4); height: 400px;">
+        <h6 class="bg-info text-light p-2 m-0 text-left">
+            Group Summary
+        </h6>
+        {% for i in cmp %}
+        <div  style="text-align: center;margin-top:-35px;font-weight:900">{{i.name}}</div>
+    <div hidden  style="text-align: center;margin-top:-35px;font-weight:900">{{i.id}}</div>
+    <br>
+        <form  method="post" action="" autocomplete="off">
             {% csrf_token %}
             <div class="row container-fluid  p-0 m-0" >
 
               <div class="col-6"></div>
                 <div class="col-6" style=" border: 1px solid rgba(128, 128, 128, 0.6);">
                   
-                  <div class="text-center"><i>
+                    <div class="text-center"><i>Loans</i></div>
                     
-                  </i></div>
-                  {% for i in name %}
-                    <div class="text-center"><b><i>{{i.name}}</i></b></div>
-                    {% endfor %}
-                    {% for i in cmp %}
                     <div class="text-center"><b>{{i.name}}</b></div>
                     <div class="text-center">For {{i.fin_begin}}</div>
-                    {% endfor %}
                     <div class="row">
-                                        </div>
+                    <div class="col-sm-12" style=" border: 1px solid rgba(128, 128, 128, 0.6);">
+                        <div class="text-center">Closing Balance</div>
+                        
+                      </div>
+                    </div>
                 </div>
                 
            
-
+{% endfor %}
 
             <table align="center"  class="table table-hover text-center " style = ' width: 100% ;'>
               <h2 align="center"></h2>
               <tr>
-                  <th colspan="18" >Particulars</th>
-                  <th >Debit</th>
-                  <th >Credit</th>
-                  <th >Closing Balance</th>
-                  </tr>
-                  {% for s in  v %}
-        <tr>
-          <td colspan="18" ><a href="{% url 'ledgervouchers' forloop.counter  %}" class="btns_prnt">{{s.month|date:'M'}}</a></td>
-           <td ><center>{{s.credit}}</center></td>
-           <td ><center>{{s.debit}}</center></td>
-           <td ><center>{{s.debit|sub:s.credit}}</center></td>
-        </tr> 
-      
-         
-     {% endfor %}
-      
-      
-       
-        </tbody>
-       <div class="row container-fluid m-0 w-100 p-0">
-        <table class="table p-0 m-0">
-            <tbody>
-                <tr>
-                    <td class="w-75 m-0 p-0 pl-3">Grand Total</td>
-                    <td class="w-25 m-0 p-0 text-center"><h3 class="btns_prnt">{{total1}}</h3></td>
-                </tr>
-            </tbody>
-        </table>   
-    </table>
-
-       
-                
-                <div class="btns_prnt" >
+                  <th colspan="18">Particulars</th>
+                  <th>Debit</th>
+                  <th>Credit</th>
+                 
+                  
+                 
+                  
+              </tr>
+              <div class="btns_prnt" >
                   {% for i in led %}
+                  {% if i.ledger.under == 'Loans_liability' %}
                 <tr>
                
-                  <td colspan="18" ><a href="{% url 'monthly_summary' %}" style="font-size:16px;margin-left:30px;cursor:pointer">{{i.date}}</a></td>
+                  <td colspan="18" ><a href="{% url 'monthly_summary' i.id %}" style="font-size:16px;margin-left:30px;cursor:pointer">{{i.name}}</a></td>
                   <td>{{i.debit}}</td>
                   <td>{{i.credit}}</td>
-                </tr><br>
+                </tr>
+                {% endif %}
                   {% endfor %}
               </div>
-
-            </div> 
-            <div class="row container-fluid  p-0 m-0">
-                <div class="col" style=" border: 1px solid rgba(128, 128, 128, 0.6);">
-                    <div >Grand Total</div>
+              </div>
+          </table>
+          
+            
+            
+             
+                
+                        
                 </div>
-            </div>
-
+                
+                <table align="center"  class="table table-hover text-center " style = ' width: 100% ;'>
+                  <h2 align="center"></h2>
+                  <tr>
+                      <td width="400">Grand total</td>
+                      <td>{{ll}}</td>
+                      <td>{{cc}}</td>
+                     
+                      
+                     
+                      
+                  </tr>
+                        
+                          
+                      
+                </table>
+            </div> 
+                
+</form>
 
                                         
                        
                     </div>
-   
+
         </form>
     </div>
 

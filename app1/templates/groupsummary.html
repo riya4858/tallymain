@@ -134,12 +134,15 @@
               </tr>
               <div class="btns_prnt" >
                   {% for i in led %}
+                  
+                  
                 <tr>
                
                   <td colspan="18" ><a href="{% url 'monthly_summary' i.id %}" style="font-size:16px;margin-left:30px;cursor:pointer">{{i.name}}</a></td>
                   <td>{{i.debit}}</td>
                   <td>{{i.credit}}</td>
                 </tr>
+               
                   {% endfor %}
               </div>
               </div>
@@ -152,12 +155,20 @@
                         
                 </div>
                 
-                
-                <table class="table">
-                    <tr>
-                        <td >Grand Total</td>
-                        <td ></td>
-                    </tr>
+                <table align="center"  class="table table-hover text-center " style = ' width: 100% ;'>
+                  <h2 align="center"></h2>
+                  <tr>
+                      <td width="400">Grand total</td>
+                      <td>{{ll}}</td>
+                      <td>{{cc}}</td>
+                     
+                      
+                     
+                      
+                  </tr>
+                        
+                          
+                      
                 </table>
             </div> 
                 

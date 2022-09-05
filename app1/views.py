@@ -4773,7 +4773,8 @@ def balancesheet_asset(request):
             return redirect('/')
         tally = Companies.objects.filter(id=t_id)
         led=Ledger_vouchers.objects.all()
-        return render(request,'balancesheet_asset.html',{'cmp':tally,'led':led})
+        ledg=tally_ledger.objects.all()
+        return render(request,'balancesheet_asset.html',{'cmp':tally,'led':led,'ledg':ledg})
     else:
             return redirect('/')
 
@@ -4784,36 +4785,60 @@ def capitalacc(request):
         else:
             return redirect('/')
         tally = Companies.objects.filter(id=t_id)
-        ld=Ledger_vouchers.objects.all()
+        
+        ll=Ledger_vouchers.objects.aggregate(Sum('debit'))
+        cc=Ledger_vouchers.objects.aggregate(Sum('credit'))
+        # v=Ledger_vouchers.objects.filter(ledger_id=pk).annotate(month=TruncMonth('date')).values('month').annotate(credit=Sum('credit'),debit=Sum('debit')).order_by('month').values("month", "credit","debit")                              
+
         ledg=Ledger_vouchers.objects.raw('SELECT app1_tally_ledger.id,app1_tally_ledger.name,sum(app1_ledger_vouchers.debit) as debit,sum(app1_ledger_vouchers.credit) as credit FROM `app1_ledger_vouchers` inner join app1_tally_ledger on app1_ledger_vouchers.ledger_id=app1_tally_ledger.id group by app1_ledger_vouchers.ledger_id')
-        return render(request,'groupsummary.html',{'cmp':tally,'led':ledg})
+        return render(request,'groupsummary.html',{'cmp':tally,'led':ledg,'ll':ll,'cc':cc})
     else:
             return redirect('/')
 
-def monthly_summary(request,pk):
+# def monthly_summary(request,pk):
+#     if 't_id' in request.session:
+#         if request.session.has_key('t_id'):
+#             t_id = request.session['t_id']
+#         else:
+#             return redirect('/')  
+#         tally = Companies.objects.filter(id=t_id)  
+#         ledg=Ledger_vouchers.objects.raw('SELECT app1_tally_ledger.id,monthname( app1_ledger_vouchers.date) as date,case when sum(app1_ledger_vouchers.debit) =0 then 0 else sum(app1_ledger_vouchers.debit) end as debit,case when sum(app1_ledger_vouchers.credit)=0 then 0 else sum(app1_ledger_vouchers.credit) end as credit FROM `app1_ledger_vouchers` inner join app1_tally_ledger on app1_ledger_vouchers.ledger_id=app1_tally_ledger.id where app1_tally_ledger.id=1 and month(app1_ledger_vouchers.date)>=4 group by app1_ledger_vouchers.date')
+        
+#         ld=tally_ledger.objects.filter(id=pk)
+        
+#         return render(request,'monthlysummary.html',{'cmp':tally,'led':ledg,'ld':ld})
+#     else:
+#             return redirect('/')
+
+def monthly_summary(request,pk):#ann
     if 't_id' in request.session:
         if request.session.has_key('t_id'):
             t_id = request.session['t_id']
         else:
             return redirect('/')  
-        tally = Companies.objects.filter(id=t_id)  
-        ledg=Ledger_vouchers.objects.raw('SELECT app1_tally_ledger.id,monthname( app1_ledger_vouchers.date) as date,case when sum(app1_ledger_vouchers.debit) =0 then 0 else sum(app1_ledger_vouchers.debit) end as debit,case when sum(app1_ledger_vouchers.credit)=0 then 0 else sum(app1_ledger_vouchers.credit) end as credit FROM `app1_ledger_vouchers` inner join app1_tally_ledger on app1_ledger_vouchers.ledger_id=app1_tally_ledger.id where app1_tally_ledger.id=3 and month(app1_ledger_vouchers.date)>=4 group by app1_ledger_vouchers.date')
-        
-        ld=tally_ledger.objects.filter(id=pk)
-        return render(request,'monthlysummary.html',{'cmp':tally,'led':ledg,'ld':ld})
+        tally = Companies.objects.filter(id=t_id)
+        ledgname =tally_ledger.objects.filter(id=pk)
+        v=Ledger_vouchers.objects.filter(ledger_id=pk).annotate(month=TruncMonth('date')).values('month').annotate(credit=Sum('credit'),debit=Sum('debit')).order_by('month').values("month", "credit","debit")                              
+    #ledgname=ledgers.objects.values_list('id', 'ledger')
+   
+    
+        return render(request,'monthlysummary.html',{'name':ledgname,'v':v,'cmp':tally})
     else:
             return redirect('/')
 
 
-def ledgervouchers(request):
+
+
+def ledgervouchers(request,pk):
     if 't_id' in request.session:
         if request.session.has_key('t_id'):
             t_id = request.session['t_id']
         else:
             return redirect('/')
         tally = Companies.objects.filter(id=t_id)
-        ledg=Ledger_vouchers.objects.raw('SELECT app1_tally_ledger.id,app1_ledger_vouchers.date as date,app1_ledger_vouchers.account as account,app1_ledger_vouchers.voucher_no as voucher_no,app1_ledger_vouchers.voucher_type as voucher_type, app1_tally_ledger.name,app1_ledger_vouchers.debit as debit,app1_ledger_vouchers.credit as credit FROM `app1_ledger_vouchers` inner join app1_tally_ledger on app1_ledger_vouchers.ledger_id=app1_tally_ledger.id ')
-        return render(request,'ledgervouchers.html',{'cmp':tally,'led':ledg})
+        ledgname =tally_ledger.objects.filter(id=pk)
+        ledg=Ledger_vouchers.objects.raw('SELECT app1_tally_ledger.id,app1_ledger_vouchers.date as date,app1_ledger_vouchers.account as account,app1_ledger_vouchers.voucher_no as voucher_no,app1_ledger_vouchers.voucher_type as voucher_type, app1_tally_ledger.name,app1_ledger_vouchers.debit as debit,app1_ledger_vouchers.credit as credit FROM `app1_ledger_vouchers` inner join app1_tally_ledger on app1_ledger_vouchers.ledger_id=app1_tally_ledger.id where app1_tally_ledger.id=1 ')
+        return render(request,'ledgervouchers.html',{'cmp':tally,'led':ledg,'ledgname':ledgname})
     else:
             return redirect('/')
 
@@ -4830,6 +4855,7 @@ def ledger_vouchers(request):
             
             
             date = request.POST['date']
+            
             particulars = request.POST['particulars']
             categ=tally_ledger.objects.get(id=particulars)
             account = request.POST['account']
@@ -4844,5 +4870,21 @@ def ledger_vouchers(request):
             data.save()
             return redirect('capitalacc')
         return render(request,'ledger_vouchers.html',{'cmp':tally,'led':led})
+    else:
+            return redirect('/')
+
+def loans(request):
+    if 't_id' in request.session:
+        if request.session.has_key('t_id'):
+            t_id = request.session['t_id']
+        else:
+            return redirect('/')
+        tally = Companies.objects.filter(id=t_id)
+        ld=Ledger_vouchers.objects.all()
+        
+        ll=Ledger_vouchers.objects.aggregate(Sum('debit'))
+        cc=Ledger_vouchers.objects.aggregate(Sum('credit'))
+        ledg=Ledger_vouchers.objects.raw('SELECT app1_tally_ledger.id,app1_tally_ledger.name,sum(app1_ledger_vouchers.debit) as debit,sum(app1_ledger_vouchers.credit) as credit FROM `app1_ledger_vouchers` inner join app1_tally_ledger on app1_ledger_vouchers.ledger_id=app1_tally_ledger.id group by app1_ledger_vouchers.ledger_id')
+        return render(request,'groupsummary1.html',{'cmp':tally,'led':ledg,'ll':ll,'cc':cc})
     else:
             return redirect('/')

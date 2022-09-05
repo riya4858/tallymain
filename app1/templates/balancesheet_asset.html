@@ -25,7 +25,11 @@
 
 
 </style>
+<script>
+    function func(){
 
+    }
+</script>
 
 
 <div class="row container-fluid p-2 mx-0">
@@ -47,7 +51,7 @@
     <tr>
  <div class="btns_prnt ">
             
-     <div style="margin-left: 20px;cursor:pointer"><a href="{% url 'capitalacc'  %}"><b>Capital Account</b> </a></div>
+     <div style="margin-left: 20px;cursor:pointer"><a  href="{% url 'capitalacc' %}"><b>Capital Account</b> </a></div>
      <div class="text-right">
         <div  style="margin-top:-21px;margin-right:20px;"><b>5,00,000.00 </b></div>
 
@@ -55,7 +59,7 @@
 </div>
 
 <div class="btns_prnt">
-     <div style="margin-left: 20px;cursor:pointer"><a href=""><b>Loans(Liability)</b></a> </div>
+     <div style="margin-left: 20px;cursor:pointer"><a href="{% url 'loans'  %}"><b>Loans(Liability)</b></a> </div>
      <div class="text-right">
         <div  style="margin-top:-21px;margin-right:20px;"><b>1,200.00 </b></div>
      </div>

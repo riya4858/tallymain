@@ -374,8 +374,9 @@ urlpatterns = [
     path('balancesheet_asset',views.balancesheet_asset,name='balancesheet_asset'),
     path('capitalacc',views.capitalacc,name='capitalacc'),
     path('monthly_summary/<int:pk>',views.monthly_summary,name='monthly_summary'),
-    path('ledgervouchers',views.ledgervouchers,name='ledgervouchers'),
+    path('ledgervouchers/<int:pk>',views.ledgervouchers,name='ledgervouchers'),
     path('ledger_vouchers',views.ledger_vouchers,name='ledger_vouchers'),
+    path('loans',views.loans,name='loans'),
 
 
 

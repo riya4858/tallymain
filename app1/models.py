@@ -816,3 +816,12 @@ class Ledger_vouchers(models.Model):
     voucher_no=models.CharField(max_length=225)
     debit=models.CharField(max_length=225)
     credit=models.CharField(max_length=225)
+    under=models.CharField(max_length=225,null=True)
+    closingbalance=models.IntegerField(default=0)
+class ledger_monthly(models.Model):
+    Voucher=models.ForeignKey(Voucher,on_delete=models.CASCADE,blank=True,null=True)
+    ledgers =models.ForeignKey(tally_ledger ,on_delete=models.CASCADE,blank=True,null=True)
+    ledgervoucher_date=models.DateField(null=True)
+    credit= models.IntegerField(default=0)#ledger credit
+    debit= models.IntegerField(default=0)#ledger debit
+    closingbalance=models.IntegerField(default=0)#closing balance
